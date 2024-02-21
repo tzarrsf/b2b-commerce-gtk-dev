@@ -5,7 +5,7 @@
 The data and code samples in this repository are organized in a traditional "developer package" deployable from an IDE such as Visual Studio Code; That is very much 'by design.' SFDX packages while unwieldly for Administrators who just want to stand up an environment, place orders and test out basic features can greatly accelerate self-enablement and productivity for those familiar with this setup. If you believe you've reached this repository in error, please consult these resources first:
 
 * [Get to Know B2B Commerce for Administrators](https://sfdc.co/B2BAdminGetToKnowCurriculum)
-* [Get to Know B2B Commerce for Administrators GitHub repository])](https://github.com/tzarrsf/b2b-commerce-gtk-admin/)
+* [Get to Know B2B Commerce for Administrators GitHub repository](https://github.com/tzarrsf/b2b-commerce-gtk-admin/)
 
 ## ⚠️ Disclaimers
 
