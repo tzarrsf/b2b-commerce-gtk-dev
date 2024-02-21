@@ -1,15 +1,15 @@
-# Get to Know B2B Commerce for Administrators Data and Code Examples for Partner Learning Camp (aka b2b-commerce-gtk-dev)
+# Get to Know B2B Commerce for Developers Data and Code Examples for Partner Learning Camp (aka b2b-commerce-gtk-dev)
 
 ### Preamble
 
-The data and code samples in this repository are organized in a traditional "developer package" deployable from an IDE such as Visual Studio Code; That is very much 'by design.' SFDX packages while unwieldly for Administrators who just want to stand up an environment, place orders and test out new features without having to dive into matters like coding tasks, tooling and its setup can accelerate self-enablement for those familiar with this setup. If you believe you've reached this course and GitHub repository in error, please consult these resources first:
+The data and code samples in this repository are organized in a traditional "developer package" deployable from an IDE such as Visual Studio Code; That is very much 'by design.' SFDX packages while unwieldly for Administrators who just want to stand up an environment, place orders and test out basic features can greatly accelerate self-enablement and productivity for those familiar with this setup. If you believe you've reached this repository in error, please consult these resources first:
 
 * [Get to Know B2B Commerce for Administrators](https://sfdc.co/B2BAdminGetToKnowCurriculum)
 * [Get to Know B2B Commerce for Administrators GitHub repository])](https://github.com/tzarrsf/b2b-commerce-gtk-admin/)
 
 ## ⚠️ Disclaimers
 
-This example is provided as-is. It's not officially supported by Salesforce or covered by SLAs.
+Examples are provided as-is. It's not officially supported by Salesforce or covered by SLAs.
 API documentation is not provided with the examples. Please refer to the official documentation.
 The documentation for the majority of the data and code in this collection can be found in these URLS:
 
