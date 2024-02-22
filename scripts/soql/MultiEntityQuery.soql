@@ -5,7 +5,7 @@
 
 SELECT
     Id, OrderNumber, TotalAmount, CurrencyIsoCode, Status, PoNumber,
-    Account.Id, Account.Name,
-    CreatedBy.Id, CreatedBy.Username, CreatedBy.Name, CreatedBy.UserRole.Name, CreatedBy.Profile.Name, CreatedBy.Contact.Id, CreatedBy.Contact.Name,
-    SalesStore.Id, SalesStore.Name
+    Account.Id, Account.Name, CreatedBy.Id, CreatedBy.Username, CreatedBy.Name,
+    CreatedBy.UserRole.Name, CreatedBy.Profile.Name, CreatedBy.Contact.Id,
+    CreatedBy.Contact.Name, SalesStore.Id, SalesStore.Name
 FROM OrderSummary

@@ -1,12 +1,11 @@
 <#
-    Script description.
-    Some notes.
+    Export the Products (entity Product2) without filtering them
 #>
 param (
     # the salesforce org username in email format like tzarr@b2b-standalone-spring24.org
     $sfusername='tzarr@b2b-standalone-spring24.org',
     # the output directory
-    $outdir="$Env:HOMEPATH\b2b-gtk-commerce-dev-output"
+    $outdir="$Env:HOMEPATH\b2b-commerce-gtk-dev-output"
 )
 
 # Local variable to hold the query (could also be passed in)
@@ -22,4 +21,4 @@ sf data export tree --query $query --target-org $sfusername --output-dir $outdir
 notepad.exe "$outdir\Product2.json"
 
 # Tell user it's done
-Write-Output "Execution complete for query: '$query' against username: '$sfusername' with output directory: '$outdir' and opening in Notepad..."
+Write-Output "Execution complete for query: '$query' against username: '$sfusername' with output directory: '$outdir' and file opened in Notepad."
