@@ -1,22 +1,23 @@
 /**
- * @description       : This is a sample orchestrator that calls the inventory, pricing, promotions, shipping and tax calculators.
- *                      This class must extend CartExtension.CartCalculate and must be linked to the orchestrator extension point
- *                      (Commerce_Domain_Cart_Calculate).
- *                      Calculates pricing and promotions for operations: Add product to cart, remove product from cart, edit cart
- *                      item quantity.
- *                      Calculates promotions for operations: add coupon to cart, remove coupon from cart.
- *                      Calculates pricing, promotions, inventory for start checkout operation (without shipping address available).
- *                      Calculates pricing, promotions, inventory, shipping, post shipping and taxes for start checkout operation
- *                      (with shipping address available).
- *                      Calculates shipping, post shipping and taxes for update shipping address operation.
- *                      Calculates taxes for select delivery method operation.
+ * @description       : This is a sample orchestrator that calls the inventory, pricing, promotions, shipping and tax calculators. This class must
+ *                      extend CartExtension.CartCalculate and must be linked to the orchestrator extension point
+ *                      (Commerce_Domain_Cart_Calculate). Key functionality:
+ *
+ *                      1. Calculates pricing and promotions for operations: Add product to cart, remove product from cart, edit cart item quantity.
+ *                      2. Calculates promotions for operations: add coupon to cart, remove coupon from cart.
+ *                      3. Calculates pricing, promotions, inventory for start checkout operation (without shipping address available).
+ *                      4. Calculates pricing, promotions, inventory, shipping, post shipping and taxes for start checkout operation (with shipping
+ *                         address available).
+ *                      5. Calculates shipping, post shipping and taxes for update shipping address operation.
+ *                      6. Calculates taxes for select delivery method operation.
+ *
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
  * @last modified on  : 02-29-2024
  * @last modified by  : Tom Zarr
 **/
-global class LwrCca_CartOrchestrator extends CartExtension.CartCalculate {
-
+global class LwrCca_CartOrchestrator extends CartExtension.CartCalculate
+{
     /**
      * @description All classes extending CartExtension.CartCalculate must have a default constructor defined
      */
@@ -26,13 +27,15 @@ global class LwrCca_CartOrchestrator extends CartExtension.CartCalculate {
      * @description Constructor used by unit tests only. See <<CartCalculateSampleUnitTest>>.
      * @param apexExecutor Executor which executes various calculators. Can be used to stub calculation results or delegate calculations to actual Calculator. See <<CartCalculateExecutorMock>>.
      */
-    global LwrCca_CartOrchestrator(final CartExtension.CartCalculateExecutorMock apexExecutor) {
+    global LwrCca_CartOrchestrator(final CartExtension.CartCalculateExecutorMock apexExecutor)
+    {
         // Must call super constructor in order for provided Executor to be used for calculations
         super(apexExecutor);
     }
 
     // Each orchestrator must override this calculate method.
-    global virtual override void calculate(CartExtension.CartCalculateOrchestratorRequest request) {
+    global virtual override void calculate(CartExtension.CartCalculateOrchestratorRequest request)
+    {
         CartExtension.Cart cart = request.getCart();
 
         // Use BuyerActions to decide which calculators to invoke
