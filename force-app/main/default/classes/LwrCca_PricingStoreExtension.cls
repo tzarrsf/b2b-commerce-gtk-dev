@@ -41,7 +41,7 @@ public class LwrCca_PricingStoreExtension extends commercestorepricing.PricingSe
       }
       Map<String, PriceDataFromExternalService> pricesFromExternalService;
       // Get prices from an external service
-      if(useExternalService){
+      if(USE_EXTERNAL_SERVICE){
         pricesFromExternalService = getPricesFromExternalService(products);
       }else{
         pricesFromExternalService = getPriceFromStaticResponse(products);
@@ -218,8 +218,7 @@ public class LwrCca_PricingStoreExtension extends commercestorepricing.PricingSe
 
       // To access the service below, you may need to add endpoint =
       // httpHost in Setup > Security > Remote site settings.
-      String requestURL =
-        externalPricingServiceHost+'/get-prices?skus=' +  JSON.serialize(encodedProductIDs);
+      String requestURL = EXTERNAL_PRICING_SERVICE_HOST + '/get-prices?skus=' + JSON.serialize(encodedProductIDs);
       request.setEndpoint(requestURL);
       request.setMethod('GET');
       HttpResponse response = http.send(request);
