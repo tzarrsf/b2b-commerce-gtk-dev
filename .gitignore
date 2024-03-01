@@ -168,8 +168,14 @@ dist
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
-# Stores VSCode versions used for testing VSCode extensions
+# Stores VSCode settings
 .vscode/settings.json
+
+# Not needed - shell script not used
+.husky
+
+# Not needed for tracking
+.vim-force.com
 
 # yarn v2
 .yarn/cache
