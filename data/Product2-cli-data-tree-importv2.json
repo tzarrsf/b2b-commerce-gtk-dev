@@ -1,0 +1,13 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "Product2",
+                "referenceId": "Product2Ref32"
+            },
+            "Name": "Super Vanilla Syrup",
+            "Weight__c": "2.2",
+            "Description": "With a rich vanilla flavor and an aromatic taste profile, the Super Vanilla blend offers a taste of Madagascar Vanilla with notes of brown sugar."
+        }
+    ]
+}

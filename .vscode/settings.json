@@ -18,5 +18,28 @@
     "titleBar.activeForeground": "#FFFFDD",
     "titleBar.border": "#574FB8",
     "titleBar.inactiveBackground": "#574FB8"
-}
+},
+"SFDoc.username": "Tom Zarr",
+"SFDoc.FileHeaderProperties": [
+    {
+        "name": "description",
+        "defaultValue": "This code... [Fill in the rest!]"
+    },
+    {
+        "name": "author",
+        "defaultValue": "$username"
+    },
+    {
+        "name": "group",
+        "defaultValue": "Salesforce Commerce Partner Delivery Success (2024)"
+    },
+    {
+        "name": "last modified on",
+        "defaultValue": "$date"
+    },
+    {
+        "name": "last modified by",
+        "defaultValue": "$username"
+    }
+]
 }
