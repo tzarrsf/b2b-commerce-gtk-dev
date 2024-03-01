@@ -1,3 +1,3 @@
 SELECT Id, Name
 FROM ApexClass
-WHERE Name like '%PriceStoreExtension%' or Name like '%CartOrch%'
+WHERE Name like '%LwrCca_Pricing%' or Name like '%LwrCca_CartOrch%'

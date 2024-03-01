@@ -1,0 +1,3 @@
+SELECT Id, Name
+FROM ApexClass
+WHERE Name like '%LwrCca_Promotion%' or Name like '%LwrCca_CartOrch%'
