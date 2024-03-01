@@ -10,7 +10,7 @@
  *                      interface in order to be processed by the checkout flow and used for your Price Calculations integration.
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 02-29-2024
+ * @last modified on  : 03-01-2024
  * @last modified by  : Tom Zarr
 **/
 global class AuraB2B_PricingHerokuDecommissioned implements sfdc_checkout.CartPriceCalculations {
@@ -102,6 +102,10 @@ global class AuraB2B_PricingHerokuDecommissioned implements sfdc_checkout.CartPr
         return integStatus;
     }
 
+    /***
+     * Get all sale prices for the products in the cart (cart items) from an external
+     * service for the customer who owns the cart.
+     */
     private Map<String, Object> getSalesPricesFromExternalService (Set<String> skus, String customerId) {
         Http http = new Http();
         HttpRequest request = new HttpRequest();
