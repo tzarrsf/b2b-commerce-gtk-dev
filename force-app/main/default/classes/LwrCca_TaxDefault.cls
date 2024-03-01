@@ -3,6 +3,9 @@
  *                      information for a cart item and its adjustments and saves it to a cart data transfer object
  *                      (DTO). For a tax calculator extension to be processed by the checkout flow, you must implement the
  *                      CartExtension.TaxCartCalculator class.
+ *
+ *                      Main documentation source: https://developer.salesforce.com/docs/commerce/salesforce-commerce/guide/TaxCartCalculator.html
+ *
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
  * @last modified on  : 02-29-2024
@@ -101,22 +104,22 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
 
             for (String cartItemId : cartItemById.keySet())
             {
-            TaxDataFromExternalService taxDetails = dataFromExternalService.get(cartItemId);
+                TaxDataFromExternalService taxDetails = dataFromExternalService.get(cartItemId);
 
-            if (taxDetails == null) {
-                // add cvo
-                CartExtension.CartValidationOutput cvo = new CartExtension.CartValidationOutput(
-                CartExtension.CartValidationOutputTypeEnum.TAXES,
-                CartExtension.CartValidationOutputLevelEnum.INFO
-                );
-                cvo.setMessage('No tax rates configured for this location.');
-                cartValidationOutputCollection.add(cvo);
-                isCvoPresent = true;
-            }
+                if (taxDetails == null) {
+                    // add cvo
+                    CartExtension.CartValidationOutput cvo = new CartExtension.CartValidationOutput(
+                    CartExtension.CartValidationOutputTypeEnum.TAXES,
+                    CartExtension.CartValidationOutputLevelEnum.INFO
+                    );
+                    cvo.setMessage('No tax rates configured for this location.');
+                    cartValidationOutputCollection.add(cvo);
+                    isCvoPresent = true;
+                }
             }
 
             if (isCvoPresent == true) {
-            return;
+                return;
             }
 
             for (String cartItemId : dataFromExternalService.keySet())
@@ -177,25 +180,18 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
                     cartTax.setTaxRate(String.valueOf(taxDetailsToCartId.getRate()));
                     cartTaxCollection.add(cartTax);
 
-                    // Add adjustment taxes to cartItemAdjustments of cartItem and create CartTaxDto entries
-                    // for all promotion adjustments.
-                    if (
-                    taxDetailsToCartId.getItemizedPromotionTaxAmounts() != null &&
-                    !(taxDetailsToCartId.getItemizedPromotionTaxAmounts().isEmpty())
-                    )
-                    for (CartAdjustment cipaTax : taxDetailsToCartId.getItemizedPromotionTaxAmounts()) {
-                        CartExtension.CartTax promoTax = new CartExtension.CartTax(
-                        CartExtension.TaxTypeEnum.ESTIMATED,
-                        cipaTax.getAmount(),
-                        taxDetailsToCartId.getTaxName()
-                        );
-                        promoTax.setTaxRate(String.valueOf(taxDetailsToCartId.getRate()));
-                        CartExtension.cartItemPriceAdjustment adj = getAdjustmentById(
-                        cartItem.getCartItemPriceAdjustments(),
-                        cipaTax.getId()
-                        );
-                        if (adj != null) {
-                        adj.getCartTaxes().add(promoTax);
+                    // Add adjustment taxes to cartItemAdjustments of cartItem and create CartTaxDto entries for all promotion adjustments.
+                    if (taxDetailsToCartId.getItemizedPromotionTaxAmounts() != null &&!(taxDetailsToCartId.getItemizedPromotionTaxAmounts().isEmpty()))
+                    {
+                        for (CartAdjustment cipaTax : taxDetailsToCartId.getItemizedPromotionTaxAmounts())
+                        {
+                            CartExtension.CartTax promoTax = new CartExtension.CartTax(CartExtension.TaxTypeEnum.ESTIMATED, cipaTax.getAmount(),
+                                taxDetailsToCartId.getTaxName());
+                            promoTax.setTaxRate(String.valueOf(taxDetailsToCartId.getRate()));
+                            CartExtension.cartItemPriceAdjustment adj = getAdjustmentById(cartItem.getCartItemPriceAdjustments(),cipaTax.getId());
+                            if (adj != null) {
+                                adj.getCartTaxes().add(promoTax);
+                            }
                         }
                     }
                 }
@@ -280,7 +276,9 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
         for (Integer i = (cipaList.size() - 1); i >= 0; i--)
         {
             if (String.valueOf(cipaList.get(i).getId()) == id)
+            {
                 return cipaList.get(i);
+            }
         }
         return null;
     }
@@ -315,10 +313,10 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
             response.getBody()
             );
             return populateTax(resultsFromExternalService);
-        } else {
-            throw new CalloutException(
-            'There was a problem with the request. Error: ' + response.getStatusCode()
-            );
+        }
+        else
+        {
+            throw new CalloutException('There was a problem with the request. Error: ' + response.getStatusCode());
         }
     }
 
@@ -354,7 +352,8 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
         return taxDetailsFromExternalService;
     }
 
-    private Map<String, TaxDataFromExternalService> getTaxesFromStaticResponse(Map<String, CartExtension.CartItem> cartItemsMap, String state, String country, CartExtension.TaxLocaleTypeEnum taxType)
+    private Map<String, TaxDataFromExternalService> getTaxesFromStaticResponse(Map<String, CartExtension.CartItem> cartItemsMap, String state, String country,
+        CartExtension.TaxLocaleTypeEnum taxType)
     {
         Double taxRate = 0.15;
         String responseJson = '{';

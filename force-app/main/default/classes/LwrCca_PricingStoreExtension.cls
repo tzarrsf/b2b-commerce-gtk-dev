@@ -9,6 +9,8 @@
  *
  *                      This must implement the commercestorepricing.PricingService class in order to be processed by the
  *                      pricing flow.
+ * 
+ *                      Main documentation source: https://developer.salesforce.com/docs/commerce/salesforce-commerce/guide/PricingCartCalculator.html
  *
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)

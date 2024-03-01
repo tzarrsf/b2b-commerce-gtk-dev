@@ -1,5 +1,9 @@
 /**
- * @description       : This code... [Fill in the rest!]
+ * @description       : This code extends the CartExtension.ShippingCartCalculator base class in order to calculate shipping charges in conjunction with
+ *                      the cart orchestrator.
+ *
+ *                      Main documentation source: https://developer.salesforce.com/docs/commerce/salesforce-commerce/guide/ShippingCartCalculator.html
+ *
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
  * @last modified on  : 02-29-2024

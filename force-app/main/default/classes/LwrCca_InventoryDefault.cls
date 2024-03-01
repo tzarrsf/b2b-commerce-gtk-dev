@@ -1,5 +1,6 @@
 /**
  * @description       : Default Inventory class for B2B Commerce LWR CCA Integration. Currently this is only calling into the base class.
+ *                      Main documentation source: https://developer.salesforce.com/docs/commerce/salesforce-commerce/guide/InventoryCartCalculator.html
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
  * @last modified on  : 02-29-2024

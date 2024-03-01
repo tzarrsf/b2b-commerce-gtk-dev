@@ -1,6 +1,9 @@
 /**
  * @description       : This sample is for the situations where Digital Shipping is required, meaning there is no shipping cost.
  *                      This class must extend the CartExtension.ShippingCartCalculator class to be processed.
+ *
+ *                      Main documentation source: https://developer.salesforce.com/docs/commerce/salesforce-commerce/guide/ShippingCartCalculator.html
+ *
  * @author            : Tom Zarr and Shane Smyth
  * @group             : Salesforce Commerce Partner Delivery Success (2024) and Saltbox Management
  * @last modified on  : 02-29-2024
