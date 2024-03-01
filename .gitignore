@@ -185,4 +185,4 @@ dist
 .pnp.*
 
 #SOQL Test Scripts
-./scripts/soql/TestQuery.*
+scripts/soql/TestQuery.*
