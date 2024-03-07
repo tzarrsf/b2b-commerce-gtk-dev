@@ -186,3 +186,6 @@ dist
 
 #SOQL Test Scripts
 scripts/soql/TestQuery*
+
+#Apex Test Scripts
+scripts/apex/TestQuery*
