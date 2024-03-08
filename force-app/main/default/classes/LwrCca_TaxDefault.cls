@@ -8,7 +8,7 @@
  *
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 02-29-2024
+ * @last modified on  : 03-05-2024
  * @last modified by  : Tom Zarr
 **/
 public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
@@ -283,10 +283,10 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
         return null;
     }
 
-      /***
-       * This simulates a call to an external tax service. Change this function based on your external service. Transform tax data
-       * returned from service into cart ID to TaxDataFromExternalService map.
-       */
+    /***
+     * This simulates a call to an external tax service. Change this function based on your external service. Transform tax data
+     * returned from service into cart ID to TaxDataFromExternalService map.
+     */
     private Map<String, TaxDataFromExternalService> getTaxesFromExternalService(Map<String, CartExtension.CartItem> cartItemById, String state, String country,
         CartExtension.TaxLocaleTypeEnum taxType)
     {

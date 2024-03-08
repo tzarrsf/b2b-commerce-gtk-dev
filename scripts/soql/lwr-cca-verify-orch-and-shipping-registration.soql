@@ -1,0 +1,5 @@
+SELECT Id, DeveloperName, ExtensionPointName, ExternalServiceProviderId,
+ExternalServiceProviderType, MasterLabel
+FROM RegisteredExternalService
+WHERE ExtensionPointName <> NULL
+AND (DeveloperName like '%Ship%' or DeveloperName like '%CartOrch%')

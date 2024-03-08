@@ -1,0 +1,5 @@
+SELECT Id, Name from ApexClass
+WHERE Name like 'AuraB2B_Inventory%'
+OR Name like 'AuraB2B_Pricing%'
+OR Name like 'AuraB2B_Ship%'
+OR Name like 'AuraB2B_Tax%'
