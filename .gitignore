@@ -169,7 +169,7 @@ dist
 .vscode-test
 
 # Stores VSCode settings
-.vscode/settings.json
+.vscode/
 
 # Not needed - shell script not used
 .husky
