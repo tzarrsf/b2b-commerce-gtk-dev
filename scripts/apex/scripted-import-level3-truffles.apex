@@ -3,7 +3,7 @@
  *                      Salesforce Partner Learning Camp Curriculum "B2B Commerce: Developer Essentials" activity "Scripted Import."
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-07-2024
+ * @last modified on  : 03-08-2024
  * @last modified by  : Tom Zarr
 **/
 
@@ -12,7 +12,7 @@ String SCRIPT_NAME = 'Coffee Truffle Level 3 Import';
 String STORE_NAME = 'Capricorn B2B LWR Store';
 String CATEGORY_NAME = 'Coffee Truffles';
 
-// Use a better collection structure than our Level 3 script
+// Use a better collection structure than our Level 2 script
 ScriptedImportLevel3Element[] importElements = new ScriptedImportLevel3Element[]
 {
     new ScriptedImportLevel3Element
@@ -49,25 +49,15 @@ ScriptedImportLevel3Element[] importElements = new ScriptedImportLevel3Element[]
     )
 };
 
-for(ScriptedImportLevel3Element element : importElements) {
-    System.debug(element.Name);
-}
-
-System.assertEquals(1, 2, 'Script exit');
-
-
 System.debug(SCRIPT_NAME + ' script started...');
 
 // Display script settings
 String variables = String.format(
-    'Variable dump...\r\nSTORE_NAME: {0}\r\nCATEGORY_NAME: {1}\r\nPRODUCT_NAMES: {2}\r\nPRODUCT_DESCRIPTIONS: {3}\r\nSALE_PRICES: {4}\r\nLIST_PRICES: {5}',
+    'Variable dump...\r\nSTORE_NAME: {0}\r\nCATEGORY_NAME: {1}\r\nNumber of import records: {2}',
     new Object[] {
         STORE_NAME,
         CATEGORY_NAME,
-        String.join(PRODUCT_NAMES,', '),
-        String.join(PRODUCT_DESCRIPTIONS,', '),
-        String.join(SALE_PRICES,', '),
-        String.join(LIST_PRICES,', ')
+        importElements.size()
     }
 );
 System.debug(variables);
@@ -101,19 +91,16 @@ insert productCategory;
 System.debug('Create Product records');
 List<Product2> products = new List<Product2>();
 
-// Use an intentionally bad data structure that assumes perfect sorting that we'll improve in the next version
-Integer trackingIndex = 0;
-
-for (String name : PRODUCT_NAMES) {
+// Use our much-improved data structure to create products
+for(ScriptedImportLevel3Element element : importElements) {
     products.Add(
         new Product2
         (
-            Name = name,
-            Description = PRODUCT_DESCRIPTIONS[trackingIndex],
-            ProductCode = PRODUCT_CODES[trackingIndex]
+            Name = element.Name,
+            Description = element.Description,
+            ProductCode = element.ProductCode
         )
     );
-    trackingIndex++;
 }
 
 insert products;
@@ -143,51 +130,70 @@ Pricebook2 standardPricebook = standardPricebooks[0];
 System.debug('Get the Pricebooks (Pricebook2) linked to the WebStore and single out the Ids for them');
 List<Id> pricebook2Ids = new List<Id>();
 for(WebStorePriceBook webStorePriceBook : webStorePriceBooks) {
-    pricebook2Ids.Add(webStorePriceBook.Pricebook2Id);
+    pricebook2Ids.add(webStorePriceBook.Pricebook2Id);
 }
 List<Pricebook2> priceBooks = [SELECT Id, Name, ValidFrom, ValidTo FROM Pricebook2 WHERE Id in :pricebook2Ids];
 System.assert(priceBooks.size() > 0, 'priceBooks issue');
 System.assert(priceBooks.size() >= 1, 'priceBooks issue - should be at least a list pricebook');
 
+// Get the ProductCode values on the import record
+List<String> productCodes = new List<String>();
+for(ScriptedImportLevel3Element element : importElements) {
+    productCodes.add(element.ProductCode);
+}
+
 // Check that the Custom Pricebook Entries do not exist already by Pricebook2Id, Product2Id and ProductCode
 System.debug('Check that the Pricebook Entries do not exist already by Pricebook2Id, Product2Id and ProductCode');
 List<PricebookEntry> pricebookEntries = [SELECT Id, CurrencyIsoCode, Pricebook2Id, Product2Id, ProductCode, ProductSellingModelId, UnitPrice, UseStandardPrice
-FROM PricebookEntry WHERE Pricebook2Id in :pricebook2Ids and Product2Id in :products and ProductCode in :PRODUCT_CODES];
+FROM PricebookEntry WHERE Pricebook2Id in :pricebook2Ids and Product2Id in :products and ProductCode in :productCodes];
 System.assert(pricebookEntries.size() == 0, 'PricebookEntry found when there should not be any');
 
-// Create the PriceBookEntries using the dirty data structure
-System.debug('Create the PriceBookEntries using the dirty data structure');
+// Create the PriceBookEntries using the much-improved data structure
+System.debug('Create the PriceBookEntries using the much-improved data structure');
 pricebookEntries = new List<PricebookEntry>();
 
-// Insert the Standard Pricebook entries using an intentionally bad data structure that assumes perfect sorting. We'll improve it in the next version
-trackingIndex = 0;
-
-for(Product2 product: products) {
-    pricebookEntries.add(
-        new PricebookEntry(
-            Product2Id = product.Id,
-            Pricebook2Id = standardPricebook.Id,
-            UnitPrice = LIST_PRICES[trackingIndex]
-        )
-    );
-    trackingIndex++;
+/***
+ * Insert the Standard Pricebook entries using the improved data structure. Lambda expressions would be great here, but
+ * we're in the Apex world of nerfed or 'bumper bowling' Java/C# without such tools, so we'll make do with a nested loop.
+ */
+for(ScriptedImportLevel3Element element : importElements) {
+    // Match the products
+    for(Product2 product: products) {
+        if(element.ProductCode == product.ProductCode) {
+            // Winner, winner, chicken dinner!
+            pricebookEntries.add(
+                new PricebookEntry(
+                    Product2Id = product.Id,
+                    Pricebook2Id = standardPricebook.Id,
+                    UnitPrice = element.StandardPrice
+                )
+            );
+        }
+    }
 }
 
 insert pricebookEntries;
 
-// Insert the Custom Pricebook entries using an intentionally bad data structure that assumes perfect sorting. We'll improve it in the next version
+/***
+ * Insert the Custom Pricebook entries using the improved data structure. Lambda expressions would be great here, but
+ * we're in the Apex world of nerfed or 'bumper bowling' Java/C# without such tools, so we'll make do with a nested loop.
+ */
 pricebookEntries.clear();
-trackingIndex = 0;
 
-for(Product2 product: products) {
-    pricebookEntries.add(
-        new PricebookEntry(
-            Product2Id = product.Id,
-            Pricebook2Id = pricebooks[0].Id,
-            UnitPrice = SALE_PRICES[trackingIndex]
-        )
-    );
-    trackingIndex++;
+for(ScriptedImportLevel3Element element : importElements) {
+    // Match the products - a 
+    for(Product2 product: products) {
+        if(element.ProductCode == product.ProductCode) {
+            // Winner, winner, chicken dinner
+            pricebookEntries.add(
+                new PricebookEntry(
+                    Product2Id = product.Id,
+                    Pricebook2Id = pricebooks[0].Id,
+                    UnitPrice = element.CustomPrice
+                )
+            );
+        }
+    }
 }
 
 insert pricebookEntries;
