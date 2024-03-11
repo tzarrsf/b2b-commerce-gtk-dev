@@ -192,3 +192,6 @@ scripts/soql/TestQuery*
 
 #Apex Test Scripts
 scripts/apex/TestQuery*
+
+#Apex Test Classes
+force-app/main/default/classes/apex/TestClass*
