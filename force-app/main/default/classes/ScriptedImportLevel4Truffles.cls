@@ -5,7 +5,7 @@
  *                      ScriptedImportLevel4Element as a DTO.
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-08-2024
+ * @last modified on  : 03-11-2024
  * @last modified by  : Tom Zarr
 **/
 public with sharing class ScriptedImportLevel4Truffles {
@@ -193,49 +193,13 @@ public with sharing class ScriptedImportLevel4Truffles {
         return pricebooks;
     }
 
-    // Given an array of sObjects, pull single property of all the elements and project it on to a typed one-dimensional array
-    /*
-    private static List<Id> projectPropertyToArray(List<sObject> sObjectArray, String propertyName, Type type)
-    {
-        //List<Type> typedList = new List<Type>();
-        List<Id> typedList = new List<Id>();
-
-        for(sObject sobj : sObjectArray) {
-            //typedList.add(sObj[propertyName]);
-            //TODO: Figure out dynamic way to respect the property name
-            typedList.add(sObj.Id);
-        }
-
-        return typedList;
-    }
-    */
-
-    private static List<Id> projectIdPropertyToArray(List<Pricebook2> sObjectArray, String propertyName)
-    {
-        List<Id> typedList = new List<Id>();
-
-        for(Pricebook2 sobj : sObjectArray) {
-            typedList.add(sObj.Id);
-        }
-
-        return typedList;
-    }
-
-    private static List<String> projectStringPropertyToArray(List<Product2> sObjectArray, String propertyName)
-    {
-        List<String> typedList = new List<String>();
-
-        for(Product2 sobj : sObjectArray) {
-            typedList.add(sObj.ProductCode);
-        }
-
-        return typedList;
-    }
-
     public static List<PriceBookEntry> createPricebookEntries(List<Pricebook2> pricebooks, List<Product2> products)
     {
-        List<string> productCodes = projectStringPropertyToArray(products, 'ProductCode');
-        List<Id> priceBookIds = projectIdPropertyToArray(pricebooks, 'Id');
+        List<String> productCodes = new List<String>();
+        Convert.toListOf(CollectionHelper.projectPropertyToObjectList(products, 'ProductCode'), Type.forName('String'), productCodes);
+
+        List<Id> priceBookIds = new List<Id>();
+        Convert.toListOf(CollectionHelper.projectPropertyToObjectList(pricebooks, 'Id'), Type.forName('Id'), priceBookIds);
 
         // Check that the Custom Pricebook Entries do not exist already by Pricebook2Id, Product2Id and ProductCode
         System.debug('Check that the Pricebook Entries do not exist already by Pricebook2Id, Product2Id and ProductCode');
