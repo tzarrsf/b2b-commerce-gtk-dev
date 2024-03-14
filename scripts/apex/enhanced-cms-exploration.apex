@@ -35,7 +35,6 @@ String STORE_NAME_WILDCARD = String.format('%{0}%',new Object[]{STORE_NAME});
  */
 String LANGUAGE_CODE = 'en_US';
 
-
 /** Ocassionally we may need to URL Encode things which requires this. Calling an API endpoint where there isn't a
  * ConnectAPI available (or I couldn't find one) comes to mind.
  */
@@ -109,8 +108,9 @@ System.assertEquals(ORIGINAL_WEB_STORE_ID, WEB_STORE_ID);
 System.debug('---- WebStore (API)');
 String webStoresApiJson;
 List<Object> webStoresApi;
-String webStoresApiSoql = EncodingUtil.urlEncode(String.format('SELECT Id, Name FROM WebStore WHERE Name =\'{0}\'', new Object[]{STORE_NAME}),ENCODING_SCHEME);
-String uri = BaseRestUtility.ORG_API_BASE_URI + '/query/?q=' + webStoresApiSoql;
+//String uri = BaseRestUtility.ORG_API_BASE_URI + '/query/?q=SELECT+Id,+Name+FROM+WebStore'; //+WHERE+Name+=\'' + STORE_NAME + '\'';
+String urlEncodedSoql = EncodingUtil.urlEncode('SELECT Id, Name FROM WebStore WHERE Name =\'' + STORE_NAME + '\'', ENCODING_SCHEME);
+String uri = BaseRestUtility.ORG_API_BASE_URI + '/query/?q=' + urlEncodedSoql;
 try{
     BaseRestUtility baseRestUtility = new BaseRestUtility();
     webStoresApiJson = baseRestUtility.handleHttpGetRequest(uri);
@@ -122,9 +122,10 @@ try{
 }
 System.assert(webStoresApi!= null, 'WebStore issue');
 System.assert(webStoresApi.size() == 1, 'WebStore issue');
+//System.assert(webStoresApi.size() > 0, 'WebStore issue');
 System.debug('webStoresApi records: ' + webStoresApi.size());
-WEB_STORE_ID = webStoresApi[0].get('Id');
-System.assertEquals(ORIGINAL_WEB_STORE_ID, WEB_STORE_ID);
+//WEB_STORE_ID = webStoresApi[0].get('Id');
+//System.assertEquals(ORIGINAL_WEB_STORE_ID, WEB_STORE_ID);
 
 // WebStoreNetwork - Using obtained WebStore, locate the junction between WebStore and Network
 // SOQL Version
