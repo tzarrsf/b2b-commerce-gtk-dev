@@ -92,7 +92,8 @@ String MANAGED_CONTENT_SPACE_ID = '';
 String SITE_ID = '';
 String USER = UserInfo.getUserName();
 
-// WebStore - We look this up by STORE_NAME
+
+// -------- WebStore - We look this up by STORE_NAME -------- //
 // SOQL Version
 System.debug('-- WebStore (SOQL) - We look this up by STORE_NAME');
 System.debug('---- WebStore (SOQL)');
@@ -104,30 +105,18 @@ System.assert(webStoresSoql.size() == 1, 'WebStore issue');
 System.debug('webStoresSoql records: ' + webStoresSoql.size());
 WEB_STORE_ID = webStoresSoql[0].Id;
 System.assertEquals(ORIGINAL_WEB_STORE_ID, WEB_STORE_ID);
+
 // API Version
 System.debug('---- WebStore (API)');
-String webStoresApiJson;
-List<Object> webStoresApi;
-//String uri = BaseRestUtility.ORG_API_BASE_URI + '/query/?q=SELECT+Id,+Name+FROM+WebStore'; //+WHERE+Name+=\'' + STORE_NAME + '\'';
-String urlEncodedSoql = EncodingUtil.urlEncode('SELECT Id, Name FROM WebStore WHERE Name =\'' + STORE_NAME + '\'', ENCODING_SCHEME);
-String uri = BaseRestUtility.ORG_API_BASE_URI + '/query/?q=' + urlEncodedSoql;
-try{
-    BaseRestUtility baseRestUtility = new BaseRestUtility();
-    webStoresApiJson = baseRestUtility.handleHttpGetRequest(uri);
-    Map<String, Object> m = (Map<String, Object>) JSON.deserializeUntyped(webStoresApiJson);
-    webStoresApi = (List<Object>) m.get('records');
-}catch(Exception ex) {
-    System.debug(ex);
-    throw ex;
-}
+String soql = 'SELECT Id, Name FROM WebStore WHERE Name =\'' + STORE_NAME + '\'';
+RestUtilityForQuery restUtilityForQuery = new RestUtilityForQuery();
+List<Object> webStoresApi = (List<Object>) restUtilityForQuery.executeQueryToMap(soql).get('records');
 System.assert(webStoresApi!= null, 'WebStore issue');
 System.assert(webStoresApi.size() == 1, 'WebStore issue');
-//System.assert(webStoresApi.size() > 0, 'WebStore issue');
 System.debug('webStoresApi records: ' + webStoresApi.size());
-//WEB_STORE_ID = webStoresApi[0].get('Id');
-//System.assertEquals(ORIGINAL_WEB_STORE_ID, WEB_STORE_ID);
 
-// WebStoreNetwork - Using obtained WebStore, locate the junction between WebStore and Network
+
+// -------- WebStoreNetwork - Using obtained WebStore, locate the junction between WebStore and Network -------- //
 // SOQL Version
 System.debug('-- WebStoreNetwork (SOQL) - Using obtained WebStore, locate the junction between WebStore and Network');
 System.debug('---- WebStoreNetwork (SOQL)');
@@ -140,10 +129,12 @@ System.assert(webStoreNetworksSoql.size() == 1, 'WebStoreNetwork issue');
 System.debug('webStoreNetworksSoql records: ' + webStoreNetworksSoql.size());
 NETWORK_ID = webStoreNetworksSoql[0].NetworkId;
 System.assertEquals(ORIGINAL_NETWORK_ID, NETWORK_ID);
+
 // API Version
 System.debug('---- WebStoreNetwork (API)');
 
-// Network - Using obtained WebstoreNetwork junction obtain the Network
+
+// -------- Network - Using obtained WebstoreNetwork junction obtain the Network -------- //
 // SOQL Version
 System.debug('-- Network - Using obtained WebstoreNetwork junction obtain the Network');
 System.debug('---- Network (SOQL)');
@@ -175,7 +166,8 @@ System.assertEquals(ORIGINAL_NETWORK_ID, NETWORK_ID);
 System.debug('---- Network (API)');
 System.debug('TBD');
 
-// Channels (ManagedContentChannel)
+
+// -------- Channels (ManagedContentChannel) -------- //
 // SOQL Version via ManagedContentChannel
 System.debug('---- Channels via ManagedContentChannel (SOQL) - Get all records');
 List<ManagedContentChannel> managedContentChannelsSoql = [SELECT CacheControlMaxAge,CreatedById,CreatedDate,Domain,DomainHostName,Id,IsDeleted,LastModifiedById,LastModifiedDate,MediaCacheControlMaxAge,Name,OptionsIsCacheControlPublic,OptionsIsDomainLocked,OptionsIsSearchable,SystemModstamp,Type FROM ManagedContentChannel];
@@ -217,7 +209,8 @@ for(ConnectApi.ManagedContentChannel channel : channelList)
 }
 System.assertEquals(ORIGINAL_CHANNEL_ID, CHANNEL_ID);
 
-// Managed Content Space - Get the object representing the CMS Workspace linked to the Store
+
+// -------- Managed Content Space - Get the object representing the CMS Workspace linked to the Store -------- //
 System.debug('---- ManagedContentSpace (SOQL) - Get the object representing the CMS Workspace for the Store');
 // SOQL Version
 List<ManagedContentSpace> spacesSoql = [SELECT CreatedById,CreatedDate,DefaultLanguage,Description,Id,IsDeleted,LastModifiedById,
@@ -273,6 +266,7 @@ if(false){
     }
 }
 
+
 // TODO: Figure this out...
 /*
 List<ConnectApi.ContentImageFile> contentImageFilesApi = ConnectApi
@@ -300,7 +294,7 @@ System.debug('productMedias: ' + productMedias.size());
 /**
  * TEMPLATE
     Documented calls for SOQL + API versions
-        Type - Get the child of Parent
+        // -------- Type - Get the child of Parent...[fill in the rest] -------- //
         System.debug('-- Type  Get the child of Parent');
         // SOQL Version
         System.debug('---- Type (SOQL)');

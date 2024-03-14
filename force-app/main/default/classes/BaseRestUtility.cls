@@ -5,10 +5,10 @@
  *                      isn't a ConnectAPI equivalent (or I couldn't find one).
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Readiness (2023)
- * @last modified on  : 03-13-2024
+ * @last modified on  : 03-14-2024
  * @last modified by  : Tom Zarr
 **/
-public class BaseRestUtility {
+public virtual class BaseRestUtility {
     /** Central toggle for turning on System.Debug calls to ease debugging efforts. Used in the debugCallSignature and debugReturn methods. */
     public static final Boolean IS_DEBUG_ACTIVE = false;
     /** The version of the API in use */
@@ -29,7 +29,6 @@ public class BaseRestUtility {
     public static final String ORG_BASE_URI = URL.getOrgDomainUrl().toExternalForm();
     /** The Base URI for the SF Org's APIs */
     public static final String ORG_API_BASE_URI = URL.getOrgDomainUrl().toExternalForm() + '/services/data/' + API_VERSION;
-
 
     HttpCalloutMock httpCalloutImplementer;
 
