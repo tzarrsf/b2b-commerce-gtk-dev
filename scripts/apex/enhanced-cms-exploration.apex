@@ -108,12 +108,24 @@ System.assertEquals(ORIGINAL_WEB_STORE_ID, WEB_STORE_ID);
 
 // API Version
 System.debug('---- WebStore (API)');
-String soql = 'SELECT Id, Name FROM WebStore WHERE Name =\'' + STORE_NAME + '\'';
+//String soqlQuery = 'SELECT Id, Name FROM WebStore WHERE Name =\'' + STORE_NAME + '\'';
+String soqlQuery = 'SELECT Id, Name FROM WebStore'; //WHERE Name =\'' + STORE_NAME + '\'';
 RestUtilityForQuery restUtilityForQuery = new RestUtilityForQuery();
-List<Object> webStoresApi = (List<Object>) restUtilityForQuery.executeQueryToMap(soql).get('records');
+String jsonString = restUtilityForQuery.executeQueryToJson(soqlQuery);
+System.debug('------ JSON raw: ' + jsonString);
+List<Object> webStoresApi = (List<Object>) restUtilityForQuery.executeQueryToMap(soqlQuery).get('records');
+for(Object obj : webStoresApi)
+{
+    System.debug('-------- JSON Element: ' + obj);
+    //System.debug('------ JSON Property: ' + obj.get('Id'));
+}
 System.assert(webStoresApi!= null, 'WebStore issue');
 System.assert(webStoresApi.size() == 1, 'WebStore issue');
 System.debug('webStoresApi records: ' + webStoresApi.size());
+System.debug(webStoresApi);
+
+//WEB_STORE_ID = webStoresApi[0].id;
+System.assertEquals(ORIGINAL_WEB_STORE_ID, WEB_STORE_ID);
 
 
 // -------- WebStoreNetwork - Using obtained WebStore, locate the junction between WebStore and Network -------- //
@@ -132,7 +144,15 @@ System.assertEquals(ORIGINAL_NETWORK_ID, NETWORK_ID);
 
 // API Version
 System.debug('---- WebStoreNetwork (API)');
-
+soqlQuery = 'SELECT CreatedById,CreatedDate,Id,IsDeleted,LastModifiedById,LastModifiedDate,Name,NetworkId,SiteId,SystemModstamp,WebStoreId';
+soqlQuery += ' FROM WebStoreNetwork';
+// TODO: Fix this
+//soqlQuery += ' WHERE WebStoreId = \'' + webStoresApi[0].Id + '\'';
+//RestUtilityForQuery restUtilityForQuery = new RestUtilityForQuery();
+List<Object> webStoreNetworksApi = (List<Object>) restUtilityForQuery.executeQueryToMap(soqlQuery).get('records');
+System.assert(webStoreNetworksApi!= null, 'WebStoreNetwork issue');
+System.assert(webStoreNetworksApi.size() == 1, 'WebStoreNetwork issue');
+System.debug('webStoreNetworksApi records: ' + webStoreNetworksApi.size());
 
 // -------- Network - Using obtained WebstoreNetwork junction obtain the Network -------- //
 // SOQL Version

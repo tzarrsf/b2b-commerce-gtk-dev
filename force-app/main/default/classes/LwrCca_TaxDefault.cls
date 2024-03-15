@@ -8,7 +8,7 @@
  *
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-05-2024
+ * @last modified on  : 03-14-2024
  * @last modified by  : Tom Zarr
 **/
 public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
@@ -22,6 +22,8 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
 
     public virtual override void calculate(CartExtension.CartCalculateCalculatorRequest request)
     {
+        System.debug('INVOCATION: LwrCca_TaxDefault calculate method called.');
+
         try
         {
             CartExtension.Cart cart = request.getCart();
@@ -86,17 +88,17 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
             else
             {
                 dataFromExternalService = getTaxesFromStaticResponse(
-                cartItemById,
-                CartDeliveryGroup.getDeliverToAddress().getState(),
-                CartDeliveryGroup.getDeliverToAddress().getCountry(),
-                cart.getTaxType()
-            );
+                    cartItemById,
+                    CartDeliveryGroup.getDeliverToAddress().getState(),
+                    CartDeliveryGroup.getDeliverToAddress().getCountry(),
+                    cart.getTaxType()
+                );
                 dataFromExternalServiceForShippingItems = getTaxesFromStaticResponse(
-                shippingItemById,
-                CartDeliveryGroup.getDeliverToAddress().getState(),
-                CartDeliveryGroup.getDeliverToAddress().getCountry(),
-                cart.getTaxType()
-            );
+                    shippingItemById,
+                    CartDeliveryGroup.getDeliverToAddress().getState(),
+                    CartDeliveryGroup.getDeliverToAddress().getCountry(),
+                    cart.getTaxType()
+                );
             }
 
             // If no tax details are returned for any cart item, add a cart validation output entry. If any invalid scenario found then return.
@@ -221,6 +223,8 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
                     cartTaxCollection.add(cartTax);
                 }
             }
+
+            System.debug('SUCCESS: calculate method of LwrCca_TaxDefault');
         }
         catch (Exception e)
         {
@@ -231,6 +235,7 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
              * in place to let the admin know that the error occurred. See the README section about error
              * handling for details about how to create that notification.
              */
+            System.debug('EXCEPTION THROWN: calculate method of LwrCca_TaxDefault: ' + e.getMessage());
             throw new CalloutException('There was a problem with the request.');
         }
         return;
