@@ -8,7 +8,7 @@
  *
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-14-2024
+ * @last modified on  : 03-15-2024
  * @last modified by  : Tom Zarr
 **/
 public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
@@ -22,7 +22,7 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
 
     public virtual override void calculate(CartExtension.CartCalculateCalculatorRequest request)
     {
-        System.debug('INVOCATION: LwrCca_TaxDefault calculate method called.');
+        System.debug('## INVOCATION: LwrCca_TaxDefault calculate method called.');
 
         try
         {
@@ -224,7 +224,7 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
                 }
             }
 
-            System.debug('SUCCESS: calculate method of LwrCca_TaxDefault');
+            System.debug('## SUCCESS: calculate method of LwrCca_TaxDefault');
         }
         catch (Exception e)
         {
@@ -235,7 +235,7 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
              * in place to let the admin know that the error occurred. See the README section about error
              * handling for details about how to create that notification.
              */
-            System.debug('EXCEPTION THROWN: calculate method of LwrCca_TaxDefault: ' + e.getMessage());
+            System.debug('## EXCEPTION THROWN: calculate method of LwrCca_TaxDefault: ' + e.getMessage());
             throw new CalloutException('There was a problem with the request.');
         }
         return;

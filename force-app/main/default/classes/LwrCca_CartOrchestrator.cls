@@ -45,12 +45,13 @@ global class LwrCca_CartOrchestrator extends CartExtension.CartCalculate
         boolean runInventory = buyerActions.isCheckoutStarted();
         boolean runShipping = buyerActions.isDeliveryGroupChanged();
         boolean runPostShipping = buyerActions.isDeliveryGroupChanged() || buyerActions.isDeliveryMethodSelected();
-        boolean runTaxes = buyerActions.isDeliveryGroupChanged() || buyerActions.isDeliveryMethodSelected();
+        boolean runTaxes = buyerActions.isCheckoutStarted() || buyerActions.isDeliveryGroupChanged() || buyerActions.isDeliveryMethodSelected();
 
         // OptionalBuyerActionDetails can be used to optimize the various calculators that are invoked
         CartExtension.CartCalculateCalculatorRequest calculatorRequest = new CartExtension.CartCalculateCalculatorRequest(cart, request.getOptionalBuyerActionDetails());
 
         if (runPricing) {
+            System.debug('## runPricing was true. Calling prices(calculatorRequest)...');
             prices(calculatorRequest);
 
             if (hasErrorLevelCartValidationOutput(cart.getCartValidationOutputs(), CartExtension.CartValidationOutputTypeEnum.PRICING)) {
@@ -59,16 +60,16 @@ global class LwrCca_CartOrchestrator extends CartExtension.CartCalculate
         }
 
         if (runPromotions) {
-            /*
+            System.debug('## runPromotions was true. Calling promotions(calculatorRequest)...');
             promotions(calculatorRequest);
 
             if (hasErrorLevelCartValidationOutput(cart.getCartValidationOutputs(), CartExtension.CartValidationOutputTypeEnum.PROMOTIONS)) {
                 return;
             }
-            */
         }
 
         if (runInventory) {
+            System.debug('## runInventory was true. Calling inventory(calculatorRequest)...');
             inventory(calculatorRequest);
 
             if (hasErrorLevelCartValidationOutput(cart.getCartValidationOutputs(), CartExtension.CartValidationOutputTypeEnum.INVENTORY)) {
@@ -77,6 +78,7 @@ global class LwrCca_CartOrchestrator extends CartExtension.CartCalculate
         }
 
         if (runShipping) {
+            System.debug('## runShipping was true. Calling shipping(calculatorRequest)...');
             shipping(calculatorRequest);
 
             if (hasErrorLevelCartValidationOutput(cart.getCartValidationOutputs(), CartExtension.CartValidationOutputTypeEnum.SHIPPING)) {
@@ -85,6 +87,7 @@ global class LwrCca_CartOrchestrator extends CartExtension.CartCalculate
         }
 
         if (runPostShipping) {
+            System.debug('## runPostShipping was true. Calling postShipping(calculatorRequest)...');
             postShipping(calculatorRequest);
 
             if (hasErrorLevelCartValidationOutput(cart.getCartValidationOutputs(), CartExtension.CartValidationOutputTypeEnum.SYSTEM_ERROR)) {
@@ -93,7 +96,7 @@ global class LwrCca_CartOrchestrator extends CartExtension.CartCalculate
         }
 
         if (runTaxes) {
-            System.debug('CONDITION MET in runTaxes method of LwrCca_CartOrchestrator');
+            System.debug('## runTaxes was true. Calling taxes(calculatorRequest)...');
             taxes(calculatorRequest);
         }
     }
