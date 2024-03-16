@@ -6,7 +6,7 @@
  *
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 02-29-2024
+ * @last modified on  : 03-15-2024
  * @last modified by  : Tom Zarr
 **/
 public class LwrCca_ShippingDefault extends CartExtension.ShippingCartCalculator {
@@ -21,7 +21,9 @@ public class LwrCca_ShippingDefault extends CartExtension.ShippingCartCalculator
     private static Boolean useExternalService = false;
 
     public virtual override void calculate(CartExtension.CartCalculateCalculatorRequest request) {
-      CartExtension.Cart cart = request.getCart();
+      System.debug('## LwrCca_ShippingDefault.calculate');
+
+        CartExtension.Cart cart = request.getCart();
       // Clean up CVO based on Shipping
       CartExtension.CartValidationOutputList cartValidationOutputList = cart.getCartValidationOutputs();
 

@@ -13,7 +13,7 @@
  *
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-15-2024
+ * @last modified on  : 03-16-2024
  * @last modified by  : Tom Zarr
 **/
 global class LwrCca_CartOrchestrator extends CartExtension.CartCalculate
@@ -36,6 +36,7 @@ global class LwrCca_CartOrchestrator extends CartExtension.CartCalculate
     // Each orchestrator must override this calculate method.
     global virtual override void calculate(CartExtension.CartCalculateOrchestratorRequest request)
     {
+        System.debug('## LwrCca_CartOrchestrator.calculate(CartExtension.CartCalculateOrchestratorRequest request)');
         CartExtension.Cart cart = request.getCart();
 
         // Use BuyerActions to decide which calculators to invoke
@@ -45,7 +46,8 @@ global class LwrCca_CartOrchestrator extends CartExtension.CartCalculate
         boolean runInventory = buyerActions.isCheckoutStarted();
         boolean runShipping = buyerActions.isDeliveryGroupChanged();
         boolean runPostShipping = buyerActions.isDeliveryGroupChanged() || buyerActions.isDeliveryMethodSelected();
-        boolean runTaxes = buyerActions.isCheckoutStarted() || buyerActions.isDeliveryGroupChanged() || buyerActions.isDeliveryMethodSelected();
+        //boolean runTaxes = buyerActions.isCheckoutStarted() || buyerActions.isDeliveryGroupChanged() || buyerActions.isDeliveryMethodSelected();
+        boolean runTaxes = buyerActions.isDeliveryGroupChanged() || buyerActions.isDeliveryMethodSelected();
 
         // OptionalBuyerActionDetails can be used to optimize the various calculators that are invoked
         CartExtension.CartCalculateCalculatorRequest calculatorRequest = new CartExtension.CartCalculateCalculatorRequest(cart, request.getOptionalBuyerActionDetails());
@@ -59,13 +61,18 @@ global class LwrCca_CartOrchestrator extends CartExtension.CartCalculate
             }
         }
 
+        /**
+         * Work in Progress - not used at the moment
+         */
         if (runPromotions) {
+            /*
             System.debug('## runPromotions was true. Calling promotions(calculatorRequest)...');
             promotions(calculatorRequest);
 
             if (hasErrorLevelCartValidationOutput(cart.getCartValidationOutputs(), CartExtension.CartValidationOutputTypeEnum.PROMOTIONS)) {
                 return;
             }
+            */
         }
 
         if (runInventory) {
@@ -77,6 +84,9 @@ global class LwrCca_CartOrchestrator extends CartExtension.CartCalculate
             }
         }
 
+        /**
+         * This code must run even if using the native shipping feature
+         */
         if (runShipping) {
             System.debug('## runShipping was true. Calling shipping(calculatorRequest)...');
             shipping(calculatorRequest);
@@ -86,6 +96,9 @@ global class LwrCca_CartOrchestrator extends CartExtension.CartCalculate
             }
         }
 
+        /**
+         * This code must run even if using the native shipping feature
+         */
         if (runPostShipping) {
             System.debug('## runPostShipping was true. Calling postShipping(calculatorRequest)...');
             postShipping(calculatorRequest);
@@ -95,9 +108,14 @@ global class LwrCca_CartOrchestrator extends CartExtension.CartCalculate
             }
         }
 
+        /**
+         * Work in Progress - not used at the moment
+         */
         if (runTaxes) {
+            /*
             System.debug('## runTaxes was true. Calling taxes(calculatorRequest)...');
             taxes(calculatorRequest);
+            */
         }
     }
 
