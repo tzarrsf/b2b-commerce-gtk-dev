@@ -1,0 +1,3 @@
+SELECT Id, AddressType, Name, Country, CountryCode, State, StateCode, IsPrimary, City, PostalCode, Street
+FROM ContactPointAddress
+WHERE Parent.Name like 'United Coffee%'
