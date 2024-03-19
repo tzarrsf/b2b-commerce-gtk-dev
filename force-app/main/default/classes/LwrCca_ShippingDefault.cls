@@ -1,6 +1,9 @@
 /**
- * @description       : This code extends the CartExtension.ShippingCartCalculator base class in order to calculate shipping charges in conjunction with
- *                      the cart orchestrator. This is part of the 
+ * @description       : This code extends the CartExtension.ShippingCartCalculator base class in order to calculate shipping charges in
+ *                      conjunction with the cart orchestrator. This class is current with the Spring '24 release and a part of the
+ *                      Salesforce Partner Learning Camp Curriculum "B2B Commerce: Developer Essentials" and specific to these activities:
+ *                          1. Implemente a Shipping Provider
+ *                          2. Configure a Cart Orchestrator
  *
  *                      Main documentation source: https://developer.salesforce.com/docs/commerce/salesforce-commerce/guide/ShippingCartCalculator.html
  *
@@ -20,7 +23,6 @@ public class LwrCca_ShippingDefault extends CartExtension.ShippingCartCalculator
 
     // You MUST change the useExternalService to True if you want to use the Third Party Service.
     private static Boolean USE_EXTERNAL_SERVICE = false;
-
 
     /**
      * The  moniker for the shipping Shipping Product Placeholder represented in ProductCode. In a real implementation you'd typically have

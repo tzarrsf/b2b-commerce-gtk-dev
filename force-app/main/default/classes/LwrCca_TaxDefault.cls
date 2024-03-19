@@ -2,13 +2,16 @@
  * @description       : This tax calculator extension class makes a call to an external service to retrieve tax
  *                      information for a cart item and its adjustments and saves it to a cart data transfer object
  *                      (DTO). For a tax calculator extension to be processed by the checkout flow, you must implement the
- *                      CartExtension.TaxCartCalculator class.
+ *                      CartExtension.TaxCartCalculator class. This class is current with the Spring '24 release and a part of the
+ *                      Salesforce Partner Learning Camp Curriculum "B2B Commerce: Developer Essentials" and specific to these activities:
+ *                          1. Implemente a Tax Provider
+ *                          2. Configure a Cart Orchestrator
  *
  *                      Main documentation source: https://developer.salesforce.com/docs/commerce/salesforce-commerce/guide/TaxCartCalculator.html
  *
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-18-2024
+ * @last modified on  : 03-19-2024
  * @last modified by  : Tom Zarr
 **/
 public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
@@ -33,6 +36,7 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
              */
             CartExtension.CartValidationOutputList cartValidationOutputCollection = cart.getCartValidationOutputs();
 
+            // TODO: Change this to use an iterator
             for (Integer i = (cartValidationOutputCollection.size() - 1); i >= 0; i--)
             {
                 CartExtension.CartValidationOutput cvo = cartValidationOutputCollection.get(i);
@@ -51,6 +55,7 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
             Map<String, CartExtension.CartItem> cartItemById = new Map<String, CartExtension.CartItem>();
             Map<String, CartExtension.CartItem> shippingItemById = new Map<String, CartExtension.CartItem>();
 
+            // TODO: Change this to use an iterator
             for (Integer i = (cartItemCollection.size() - 1); i >= 0; i--)
             {
                 if (cartItemCollection.get(i).getType() == CartExtension.SalesItemTypeEnum.PRODUCT)
@@ -110,8 +115,8 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
                 if (taxDetails == null) {
                     // add cvo
                     CartExtension.CartValidationOutput cvo = new CartExtension.CartValidationOutput(
-                    CartExtension.CartValidationOutputTypeEnum.TAXES,
-                    CartExtension.CartValidationOutputLevelEnum.INFO
+                        CartExtension.CartValidationOutputTypeEnum.TAXES,
+                        CartExtension.CartValidationOutputLevelEnum.INFO
                     );
                     cvo.setMessage('No tax rates configured for this location.');
                     cartValidationOutputCollection.add(cvo);
@@ -146,14 +151,17 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
                     cartItem.getCartTaxes().remove(cartItem.getCartTaxes().get(0));
                     }
 
+                    // TODO: Change this to use an iterator
                     for (Integer i = (cartItem.getCartItemPriceAdjustments().size() - 1); i >= 0; i--)
                     {
-                    CartExtension.CartTaxList cipaTaxes = cartItem.getCartItemPriceAdjustments()
-                        .get(i)
-                        .getCartTaxes();
-                    if (cipaTaxes.size() > 0) {
-                        cipaTaxes.remove(cipaTaxes.get(0));
-                    }
+                        CartExtension.CartTaxList cipaTaxes = cartItem.getCartItemPriceAdjustments()
+                            .get(i)
+                            .getCartTaxes();
+
+                        if (cipaTaxes.size() > 0)
+                        {
+                            cipaTaxes.remove(cipaTaxes.get(0));
+                        }
                     }
 
                     isCartItemModified = true;
@@ -164,19 +172,16 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
                  *  1. Create new cart tax entries
                  *  2. Update cart item tax information
                  */
-                if (
-                    cartItem.getCartTaxes() == null ||
-                    cartItem.getCartTaxes().isEmpty() ||
-                    isCartItemModified == true
-                ) {
+                if (cartItem.getCartTaxes() == null || cartItem.getCartTaxes().isEmpty() || isCartItemModified == true)
+                {
                     cartItem.setNetUnitPrice(taxDetailsToCartId.getNetUnitPrice());
                     cartItem.setGrossUnitPrice(taxDetailsToCartId.getGrossUnitPrice());
                     cartItem.setAdjustmentTaxAmount(taxDetailsToCartId.getAdjustmentTaxAmount());
                     CartExtension.CartTaxList cartTaxCollection = cartItem.getCartTaxes();
                     CartExtension.CartTax cartTax = new CartExtension.CartTax(
-                    CartExtension.TaxTypeEnum.ESTIMATED,
-                    taxDetailsToCartId.getAmount(),
-                    taxDetailsToCartId.getTaxName()
+                        CartExtension.TaxTypeEnum.ESTIMATED,
+                        taxDetailsToCartId.getAmount(),
+                        taxDetailsToCartId.getTaxName()
                     );
                     cartTax.setTaxRate(String.valueOf(taxDetailsToCartId.getRate()));
                     cartTaxCollection.add(cartTax);
@@ -205,8 +210,7 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
                 CartExtension.CartItem cartItem = shippingItemById.get(cartItemId);
                 boolean isCartItemModified = false;
                 // If there is any modification in unit price, delete existing and create new cart tax entries in cart item.
-                if (cartItem.getNetUnitPrice() != null &&
-                    cartItem.getNetUnitPrice() != taxDetailsToCartId.getNetUnitPrice()) {
+                if (cartItem.getNetUnitPrice() != null && cartItem.getNetUnitPrice() != taxDetailsToCartId.getNetUnitPrice()) {
                     cartItem.getCartTaxes().remove(cartItem.getCartTaxes().get(0));
                     isCartItemModified = true;
                 }
@@ -216,6 +220,7 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
                     cartItem.setNetUnitPrice(taxDetailsToCartId.getNetUnitPrice());
                     cartItem.setGrossUnitPrice(taxDetailsToCartId.getGrossUnitPrice());
                     CartExtension.CartTaxList cartTaxCollection = cartItem.getCartTaxes();
+                    // Mark this as an estimated tax
                     CartExtension.CartTax cartTax = new CartExtension.CartTax(CartExtension.TaxTypeEnum.ESTIMATED,
                         taxDetailsToCartId.getAmount(), taxDetailsToCartId.getTaxName());
                     cartTax.setTaxRate(String.valueOf(taxDetailsToCartId.getRate()));

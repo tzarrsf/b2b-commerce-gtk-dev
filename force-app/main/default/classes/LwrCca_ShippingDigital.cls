@@ -1,17 +1,20 @@
 /**
- * @description       : This sample is for the situations where Digital Shipping is required, meaning there is no shipping cost.
- *                      This class must extend the CartExtension.ShippingCartCalculator class to be processed.
+ * @description       : This sample is for the situations where Digital Shipping is required, meaning there is no shipping cost. This class
+ *                      must extend the CartExtension.ShippingCartCalculator class to be processed in checkout and have a viable shipping
+ *                      product placeholder. This class is current with the Spring '24 release and a part of the Salesforce Partner Learning
+ *                      Camp Curriculum "B2B Commerce: Developer Essentials" activities:
+ *                          1. Implemente a Shipping Provider
+ *                          2. Configure a Cart Orchestrator
  *
  *                      Main documentation source: https://developer.salesforce.com/docs/commerce/salesforce-commerce/guide/ShippingCartCalculator.html
  *
- * @author            : Tom Zarr and Shane Smyth
+ * @author            : Shane Smyth and Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024) and Saltbox Management
  * @last modified on  : 03-19-2024
  * @last modified by  : Tom Zarr
 **/
 public class LwrCca_ShippingDigital extends CartExtension.ShippingCartCalculator
 {
-
     /**
      * The  moniker for the shipping Shipping Product Placeholder represented in ProductCode. In a real implementation you'd typically have
      * one product, but multiple order delivery groups that are different. Then the price is whatever is calculated in checkout (price from
