@@ -6,7 +6,7 @@
  *
  * @author            : Tom Zarr and Shane Smyth
  * @group             : Salesforce Commerce Partner Delivery Success (2024) and Saltbox Management
- * @last modified on  : 02-29-2024
+ * @last modified on  : 03-18-2024
  * @last modified by  : Tom Zarr
 **/
 public class LwrCca_ShippingDigital extends CartExtension.ShippingCartCalculator
@@ -14,6 +14,8 @@ public class LwrCca_ShippingDigital extends CartExtension.ShippingCartCalculator
 
     public virtual override void calculate(CartExtension.CartCalculateCalculatorRequest request)
     {
+        System.debug('## INVOCATION: LwrCca_ShippingDigital.calculate called.');
+
         CartExtension.Cart cart = request.getCart();
         // Clean up CVO based on Shipping
         CartExtension.CartValidationOutputList cartValidationOutputList = cart.getCartValidationOutputs();
@@ -28,6 +30,7 @@ public class LwrCca_ShippingDigital extends CartExtension.ShippingCartCalculator
         // To create the Cart delivery group methods, we need to get the ID of the cart delivery group.
         CartExtension.CartDeliveryGroupList cartDeliveryGroups = cart.getCartDeliveryGroups();
         if (cartDeliveryGroups.size() == 0) {
+            System.debug('## EMPTY CART: LwrCca_ShippingDigital.calculate');
             CartExtension.CartValidationOutput cvo = new CartExtension.CartValidationOutput(
                 CartExtension.CartValidationOutputTypeEnum.SHIPPING,
                 CartExtension.CartValidationOutputLevelEnum.ERROR);
@@ -36,6 +39,7 @@ public class LwrCca_ShippingDigital extends CartExtension.ShippingCartCalculator
         }
         else
         {
+            System.debug('## POPULATED CART: LwrCca_ShippingDigital.calculate');
             CartExtension.CartItemList cartItems = cart.getCartItems();
             Integer numberOfUniqueItems = cartItems.size();
             CartExtension.CartDeliveryGroup cartDeliveryGroup = cartDeliveryGroups.get(0);
@@ -64,5 +68,7 @@ public class LwrCca_ShippingDigital extends CartExtension.ShippingCartCalculator
             // Set the delivery method ID that will be used for the order summary
             cartDeliveryGroup.setDeliveryMethodId(cartDeliveryGroupMethod01.getId());
         }
+
+        System.debug('## SUCCESS: LwrCca_ShippingDigital.calculate');
     }
 }

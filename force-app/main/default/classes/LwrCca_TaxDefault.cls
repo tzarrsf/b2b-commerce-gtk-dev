@@ -8,7 +8,7 @@
  *
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-15-2024
+ * @last modified on  : 03-18-2024
  * @last modified by  : Tom Zarr
 **/
 public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
@@ -22,7 +22,7 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
 
     public virtual override void calculate(CartExtension.CartCalculateCalculatorRequest request)
     {
-        System.debug('## INVOCATION: LwrCca_TaxDefault calculate method called.');
+        System.debug('## INVOCATION: LwrCca_TaxDefault.calculate called.');
 
         try
         {
@@ -224,7 +224,7 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
                 }
             }
 
-            System.debug('## SUCCESS: calculate method of LwrCca_TaxDefault');
+            System.debug('## SUCCESS: LwrCca_TaxDefault.calculate');
         }
         catch (Exception e)
         {
@@ -232,10 +232,9 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
              * For testing purposes, this example treats exceptions as user errors, which means they are
              * displayed to the buyer user. In production, you probably want exceptions to be admin-type
              * errors. In that case, throw the exception here and make sure that a notification system is
-             * in place to let the admin know that the error occurred. See the README section about error
-             * handling for details about how to create that notification.
+             * in place to let the admin know that the error occurred.
              */
-            System.debug('## EXCEPTION THROWN: calculate method of LwrCca_TaxDefault: ' + e.getMessage());
+            System.debug('## EXCEPTION THROWN: LwrCca_TaxDefault.calculate: ' + e.getMessage());
             throw new CalloutException('There was a problem with the request.');
         }
         return;
@@ -261,7 +260,7 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
                 {
                     if (cartTaxes.get(j).getAmount() == ajustments.get(k).getAmount())
                     {
-                    changedAdjTax = true;
+                        changedAdjTax = true;
                     }
                 }
 
@@ -295,6 +294,7 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
     private Map<String, TaxDataFromExternalService> getTaxesFromExternalService(Map<String, CartExtension.CartItem> cartItemById, String state, String country,
         CartExtension.TaxLocaleTypeEnum taxType)
     {
+        System.debug('## INVOCATION: LwrCca_TaxDefault.getTaxesFromExternalService called.');
         String requestURL = EXTERNAL_TAX_HOST+'/get-tax-rates-with-adjustments-post';
         String requestBody =
             '{"state":"' + state +
@@ -360,6 +360,7 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
     private Map<String, TaxDataFromExternalService> getTaxesFromStaticResponse(Map<String, CartExtension.CartItem> cartItemsMap, String state, String country,
         CartExtension.TaxLocaleTypeEnum taxType)
     {
+        System.debug('## INVOCATION: LwrCca_TaxDefault.getTaxesFromStaticResponse called.');
         Double taxRate = 0.15;
         String responseJson = '{';
 
