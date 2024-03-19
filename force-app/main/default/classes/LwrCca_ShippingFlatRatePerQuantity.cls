@@ -24,12 +24,12 @@ public class LwrCca_ShippingFlatRatePerQuantity extends CartExtension.ShippingCa
     public virtual override void calculate(CartExtension.CartCalculateCalculatorRequest request)
     {
         System.debug('## INVOCATION: LwrCca_ShippingFlatRatePerQuantity.calculate called.');
+        CartExtension.Cart cart = request.getCart();
 
         /***
          * Clean up CartValidationOutputList based on SHIPPING. When new shipping calculator request comes, we need to clean up
          * previous CVOs as they have been previously handled by the Cart Calculate API.
          */
-        CartExtension.Cart cart = request.getCart();
         CartExtension.CartValidationOutputList cartValidationOutputCollection = cart.getCartValidationOutputs();
         Iterator<CartExtension.CartValidationOutput> cartValidationOutputCollectionIterator = cartValidationOutputCollection.iterator();
 

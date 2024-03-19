@@ -23,11 +23,10 @@ public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {
     public virtual override void calculate(CartExtension.CartCalculateCalculatorRequest request)
     {
         System.debug('## INVOCATION: LwrCca_TaxDefault.calculate called.');
+        CartExtension.Cart cart = request.getCart();
 
         try
         {
-            CartExtension.Cart cart = request.getCart();
-
             /***
              * Clean up CVO based on tax. When new tax calculator request comes, we need to clean up
              * previous CVOs as they have been previously handled by the Cart Calculate API.

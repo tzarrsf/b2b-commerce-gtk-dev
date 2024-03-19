@@ -15,41 +15,50 @@ public class LwrCca_ShippingDigital extends CartExtension.ShippingCartCalculator
     public virtual override void calculate(CartExtension.CartCalculateCalculatorRequest request)
     {
         System.debug('## INVOCATION: LwrCca_ShippingDigital.calculate called.');
-
         CartExtension.Cart cart = request.getCart();
-        // Clean up CVO based on Shipping
-        CartExtension.CartValidationOutputList cartValidationOutputList = cart.getCartValidationOutputs();
 
-        for (Integer i = (cartValidationOutputList.size() - 1); i >= 0; i--) {
-            CartExtension.CartValidationOutput cvo = cartValidationOutputList.get(i);
+        /***
+         * Clean up CartValidationOutputList based on SHIPPING. When new shipping calculator request comes, we need to clean up
+         * previous CVOs as they have been previously handled by the Cart Calculate API.
+         */
+        CartExtension.CartValidationOutputList cartValidationOutputCollection = cart.getCartValidationOutputs();
+        Iterator<CartExtension.CartValidationOutput> cartValidationOutputCollectionIterator = cartValidationOutputCollection.iterator();
+
+        while (cartValidationOutputCollectionIterator.hasNext())
+        {
+            CartExtension.CartValidationOutput cvo = cartValidationOutputCollectionIterator.next();
+
             if (cvo.getType() == CartExtension.CartValidationOutputTypeEnum.SHIPPING) {
-                cartValidationOutputList.remove(cvo);
+                cartValidationOutputCollection.remove(cvo);
             }
         }
 
         // To create the Cart delivery group methods, we need to get the ID of the cart delivery group.
         CartExtension.CartDeliveryGroupList cartDeliveryGroups = cart.getCartDeliveryGroups();
+
         if (cartDeliveryGroups.size() == 0) {
-            System.debug('## EMPTY CART: LwrCca_ShippingDigital.calculate');
+            System.debug('## EMPTY CART: LwrCca_ShippingFlatRatePerQuantity.calculate');
             CartExtension.CartValidationOutput cvo = new CartExtension.CartValidationOutput(
                 CartExtension.CartValidationOutputTypeEnum.SHIPPING,
                 CartExtension.CartValidationOutputLevelEnum.ERROR);
             cvo.setMessage('No Cart Delivery Groups have been defined');
-            cartValidationOutputList.add(cvo);
+            cartValidationOutputCollection.add(cvo);
         }
         else
         {
-            System.debug('## POPULATED CART: LwrCca_ShippingDigital.calculate');
+            System.debug('## POPULATED CART: LwrCca_ShippingFlatRatePerQuantity.calculate');
             CartExtension.CartItemList cartItems = cart.getCartItems();
             Integer numberOfUniqueItems = cartItems.size();
             CartExtension.CartDeliveryGroup cartDeliveryGroup = cartDeliveryGroups.get(0);
-            CartExtension.CartDeliveryGroupMethodList cartDeliveryGroupMethods = cartDeliveryGroup.getCartDeliveryGroupMethods();
 
-            // Clean up the CartDeliveryGroupMethods
-            for (Integer i = (cartDeliveryGroupMethods.size() - 1); i >= 0; i--)
+            //CartExtension.CartDeliveryGroupMethodList cartDeliveryGroupMethods = cartDeliveryGroup.getCartDeliveryGroupMethods();
+            CartExtension.CartDeliveryGroupMethodList cartDeliveryGroupMethodCollection = cartDeliveryGroup.getCartDeliveryGroupMethods();
+            Iterator<CartExtension.CartDeliveryGroupMethod> cartDeliveryGroupMethodCollectionIterator = cartDeliveryGroupMethodCollection.iterator();
+
+            while (cartDeliveryGroupMethodCollectionIterator.hasNext())
             {
-                CartExtension.CartDeliveryGroupMethod method = cartDeliveryGroupMethods.get(i);
-                cartDeliveryGroupMethods.remove(method);
+                CartExtension.CartDeliveryGroupMethod method = cartDeliveryGroupMethodCollectionIterator.next();
+                cartDeliveryGroupMethodCollection.remove(method);
             }
 
             // To clear selected Cart Delivery Group Method
@@ -63,7 +72,7 @@ public class LwrCca_ShippingDigital extends CartExtension.ShippingCartCalculator
             cartDeliveryGroupMethod01.setCarrier('USPS');
             cartDeliveryGroupMethod01.setClassOfService('Digital Shipping');
 
-            cartDeliveryGroupMethods.add(cartDeliveryGroupMethod01);
+            cartDeliveryGroupMethodCollection.add(cartDeliveryGroupMethod01);
 
             // Set the delivery method ID that will be used for the order summary
             cartDeliveryGroup.setDeliveryMethodId(cartDeliveryGroupMethod01.getId());

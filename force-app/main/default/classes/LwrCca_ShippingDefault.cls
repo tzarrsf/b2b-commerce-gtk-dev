@@ -31,17 +31,19 @@ public class LwrCca_ShippingDefault extends CartExtension.ShippingCartCalculator
             System.debug('## INVOCATION: LwrCca_ShippingDefault.calculate called.');
 
             CartExtension.Cart cart = request.getCart();
+            /***
+             * Clean up CartValidationOutputList based on SHIPPING. When new shipping calculator request comes, we need to clean up
+             * previous CVOs as they have been previously handled by the Cart Calculate API.
+             */
+            CartExtension.CartValidationOutputList cartValidationOutputCollection = cart.getCartValidationOutputs();
+            Iterator<CartExtension.CartValidationOutput> cartValidationOutputCollectionIterator = cartValidationOutputCollection.iterator();
 
-            // Clean up CVO based on Shipping
-            CartExtension.CartValidationOutputList cartValidationOutputList = cart.getCartValidationOutputs();
-
-            // Loop avoiding one-off error from removals that a foreach could create
-            for (Integer i = (cartValidationOutputList.size() - 1); i >= 0; i--) {
-
-                CartExtension.CartValidationOutput cvo = cartValidationOutputList.get(i);
+            while (cartValidationOutputCollectionIterator.hasNext())
+            {
+                CartExtension.CartValidationOutput cvo = cartValidationOutputCollectionIterator.next();
 
                 if (cvo.getType() == CartExtension.CartValidationOutputTypeEnum.SHIPPING) {
-                    cartValidationOutputList.remove(cvo);
+                    cartValidationOutputCollection.remove(cvo);
                 }
             }
 
@@ -52,7 +54,7 @@ public class LwrCca_ShippingDefault extends CartExtension.ShippingCartCalculator
                 CartExtension.CartValidationOutput cvo = new CartExtension.CartValidationOutput(CartExtension.CartValidationOutputTypeEnum.SHIPPING,
                     CartExtension.CartValidationOutputLevelEnum.ERROR);
                 cvo.setMessage('No Cart Delivery Groups have been defined');
-                cartValidationOutputList.add(cvo);
+                cartValidationOutputCollection.add(cvo);
             }
             else
             {
@@ -82,7 +84,7 @@ public class LwrCca_ShippingDefault extends CartExtension.ShippingCartCalculator
                         CartExtension.CartValidationOutput cvo = new CartExtension.CartValidationOutput(CartExtension.CartValidationOutputTypeEnum.SHIPPING,
                                 CartExtension.CartValidationOutputLevelEnum.ERROR );
                         cvo.setMessage('No Shipping Products have been defined');
-                        cartValidationOutputList.add(cvo);
+                        cartValidationOutputCollection.add(cvo);
                     }
                     else
                     {
@@ -91,7 +93,7 @@ public class LwrCca_ShippingDefault extends CartExtension.ShippingCartCalculator
                         if(USE_EXTERNAL_SERVICE) {
                             // Get shipping options, including aspects like rates and carriers, from the external service.
                             ShippingOptionsAndRatesFromExternalService[] shippingOptionsAndRatesFromExternalService = getShippingOptionsAndRatesFromExternalService(
-                            numberOfUniqueItems, cartValidationOutputList
+                            numberOfUniqueItems, cartValidationOutputCollection
                             );
 
                             // Create a CartDeliveryGroupMethod record for every shipping option returned from the external
@@ -101,7 +103,7 @@ public class LwrCca_ShippingDefault extends CartExtension.ShippingCartCalculator
                                 populateCartDeliveryGroupMethodWithShippingOptions(
                                     shippingOptionsAndRatesFromExternalService,
                                     cartDeliveryGroupMethods,shippingProduct,
-                                    cartValidationOutputList
+                                    cartValidationOutputCollection
                                 );
                             }
                         }
