@@ -1,0 +1,9 @@
+SELECT
+    Id, Name, StockKeepingUnit, ProductCode, Description
+FROM
+    Product2
+WHERE
+    ProductClass != 'VariationParent'
+    AND Name = 'Shipping Product Placeholder'
+    AND StockKeepingUnit = 'Shipping Product Placeholder'
+    AND ProductCode = 'Shipping Product Placeholder'

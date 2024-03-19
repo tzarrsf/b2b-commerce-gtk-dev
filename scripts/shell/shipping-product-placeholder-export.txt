@@ -1,0 +1,1 @@
+sf data export tree --query "SELECT Id, Name, StockKeepingUnit, ProductCode, Description FROM Product2 WHERE ProductClass != 'VariationParent' AND Name = 'Shipping Product Placeholder' AND StockKeepingUnit = 'Shipping Product Placeholder' AND ProductCode = 'Shipping Product Placeholder'" --target-org tzarr@b2b-standalone-spring24.org --output-dir ../b2b-commerce-gtk-dev-output

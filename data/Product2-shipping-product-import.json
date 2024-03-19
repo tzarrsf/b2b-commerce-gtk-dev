@@ -1,0 +1,14 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "Product2",
+                "referenceId": "Product2Ref1"
+            },
+            "Name": "Shipping Product Placeholder",
+            "StockKeepingUnit": "Shipping Product Placeholder",
+            "ProductCode": "Shipping Product Placeholder",
+            "Description": "Shipping Product Placeholder"
+        }
+    ]
+}

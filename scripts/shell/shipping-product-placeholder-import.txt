@@ -1,0 +1,1 @@
+sf data import tree --files ../data/Product2-shipping-product-import.json --target-org tzarr@b2b-standalone-spring24.org

@@ -6,11 +6,33 @@
  *
  * @author            : Tom Zarr and Shane Smyth
  * @group             : Salesforce Commerce Partner Delivery Success (2024) and Saltbox Management
- * @last modified on  : 03-18-2024
+ * @last modified on  : 03-19-2024
  * @last modified by  : Tom Zarr
 **/
 public class LwrCca_ShippingDigital extends CartExtension.ShippingCartCalculator
 {
+
+    /**
+     * The  moniker for the shipping Shipping Product Placeholder represented in ProductCode. In a real implementation you'd typically have
+     * one product, but multiple order delivery groups that are different. Then the price is whatever is calculated in checkout (price from
+     * the product isn't a factor).
+     */
+    public static final String SHIPPING_PRODUCT_MONIKER = 'Shipping Product Placeholder';
+
+    /**
+     * The product for shipping represented in ProductCode.
+     */
+    public static final String SHIPPING_PRODUCT_CODE = SHIPPING_PRODUCT_MONIKER;
+
+    /**
+     * The product for shipping represented in the SKU.
+     */
+    public static final String SHIPPING_PRODUCT_STOCK_KEEPING_UNIT = SHIPPING_PRODUCT_MONIKER;
+
+    /**
+     * The product for shipping represented in the Name.
+     */
+    public static final String SHIPPING_PRODUCT_NAME = SHIPPING_PRODUCT_MONIKER;
 
     public virtual override void calculate(CartExtension.CartCalculateCalculatorRequest request)
     {
@@ -65,7 +87,17 @@ public class LwrCca_ShippingDigital extends CartExtension.ShippingCartCalculator
             cartDeliveryGroup.setSelectedCartDeliveryGroupMethod(null);
 
             // Get the shipping product - in this case we use SKU to find the right shipping product
-            List<Product2> shippingProducts = [SELECT Id FROM Product2 WHERE ProductClass != 'VariationParent' AND StockKeepingUnit = 'Ship1' LIMIT 1];
+            List<Product2> shippingProducts = [
+                SELECT
+                    Id, Name, StockKeepingUnit, ProductCode
+                FROM
+                    Product2
+                WHERE
+                    ProductClass != 'VariationParent'
+                    AND Name = :SHIPPING_PRODUCT_NAME
+                    AND StockKeepingUnit = :SHIPPING_PRODUCT_STOCK_KEEPING_UNIT
+                    AND ProductCode = :SHIPPING_PRODUCT_CODE LIMIT 1
+            ];
             String shippingProduct = Id.valueOf(shippingProducts[0].Id);
 
             CartExtension.CartDeliveryGroupMethod cartDeliveryGroupMethod01 = new CartExtension.CartDeliveryGroupMethod('No Shipping', 0.00, shippingProduct);

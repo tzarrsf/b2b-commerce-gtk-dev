@@ -6,7 +6,7 @@
  *
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-18-2024
+ * @last modified on  : 03-19-2024
  * @last modified by  : Tom Zarr
 **/
 public class LwrCca_ShippingDefault extends CartExtension.ShippingCartCalculator
@@ -20,6 +20,29 @@ public class LwrCca_ShippingDefault extends CartExtension.ShippingCartCalculator
 
     // You MUST change the useExternalService to True if you want to use the Third Party Service.
     private static Boolean USE_EXTERNAL_SERVICE = false;
+
+
+    /**
+     * The  moniker for the shipping Shipping Product Placeholder represented in ProductCode. In a real implementation you'd typically have
+     * one product, but multiple order delivery groups that are different. Then the price is whatever is calculated in checkout (price from
+     * the product isn't a factor).
+     */
+    public static final String SHIPPING_PRODUCT_MONIKER = 'Shipping Product Placeholder';
+
+    /**
+     * The product for shipping represented in ProductCode.
+     */
+    public static final String SHIPPING_PRODUCT_CODE = SHIPPING_PRODUCT_MONIKER;
+
+    /**
+     * The product for shipping represented in the SKU.
+     */
+    public static final String SHIPPING_PRODUCT_STOCK_KEEPING_UNIT = SHIPPING_PRODUCT_MONIKER;
+
+    /**
+     * The product for shipping represented in the Name.
+     */
+    public static final String SHIPPING_PRODUCT_NAME = SHIPPING_PRODUCT_MONIKER;
 
     // TODO: Refactor this to use the BaseRestUtility or one of its children - the naming also isn't fantastic here
     private static final Integer SUCCESSFUL_HTTP_REQUEST = 200;
@@ -77,7 +100,17 @@ public class LwrCca_ShippingDefault extends CartExtension.ShippingCartCalculator
                     cartDeliveryGroup.setSelectedCartDeliveryGroupMethod(null);
 
                     // Get the Shipping Product
-                    List<Product2> shippingProducts = [SELECT Id FROM Product2 WHERE ProductClass != 'VariationParent' LIMIT 1];
+                    List<Product2> shippingProducts = [
+                        SELECT
+                            Id, Name, StockKeepingUnit, ProductCode
+                        FROM
+                            Product2
+                        WHERE
+                            ProductClass != 'VariationParent'
+                            AND Name = :SHIPPING_PRODUCT_NAME
+                            AND StockKeepingUnit = :SHIPPING_PRODUCT_STOCK_KEEPING_UNIT
+                            AND ProductCode = :SHIPPING_PRODUCT_CODE LIMIT 1
+                    ];
 
                     if(shippingProducts.size() == 0)
                     {
