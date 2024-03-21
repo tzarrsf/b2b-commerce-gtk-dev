@@ -2,14 +2,14 @@
  * @description       : This code extends the CartExtension.ShippingCartCalculator base class in order to calculate shipping charges in
  *                      conjunction with the cart orchestrator. This class is current with the Spring '24 release and a part of the
  *                      Salesforce Partner Learning Camp Curriculum "B2B Commerce: Developer Essentials" and specific to these activities:
- *                          1. Implemente a Shipping Provider
+ *                          1. Implement a Shipping Provider
  *                          2. Configure a Cart Orchestrator
  *
  *                      Main documentation source: https://developer.salesforce.com/docs/commerce/salesforce-commerce/guide/ShippingCartCalculator.html
  *
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-19-2024
+ * @last modified on  : 03-20-2024
  * @last modified by  : Tom Zarr
 **/
 public class LwrCca_ShippingDefault extends CartExtension.ShippingCartCalculator

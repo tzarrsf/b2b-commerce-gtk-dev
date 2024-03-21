@@ -1,3 +1,4 @@
 SELECT Id, Name
 FROM ApexClass
 WHERE Name like 'LwrCca_%' and (NOT Name like '%_Test')
+ORDER By Name asc
