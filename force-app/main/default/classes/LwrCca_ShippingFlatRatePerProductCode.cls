@@ -209,11 +209,12 @@ public class LwrCca_ShippingFlatRatePerProductCode extends CartExtension.Shippin
                         try
                         {
                             // TODO: Ask product and engineering how to get the product code while iterating the cart items
-                            shippingCostByProductCode = this.cachedRateMap.get(cartItem.getProductCode());
+                            // The getSku() call is a hack to make the deployment work for now
+                            shippingCostByProductCode = this.cachedRateMap.get(cartItem.getSku());
                         }
                         catch(Exception ex)
                         {
-                            System.debug('## Exception caught in map lookup for ProductCode: ' + cartItem.getProductCode() + 'Falling back to rate of: ' + SHIPPING_COST_FALLBACK_RATE);
+                            System.debug('## Exception caught in map lookup for ProductCode: ' + cartItem.getSku() + 'Falling back to rate of: ' + SHIPPING_COST_FALLBACK_RATE);
                         }
 
                         runningShippingTotal = cartItems.size() * shippingCostByProductCode;
@@ -227,11 +228,11 @@ public class LwrCca_ShippingFlatRatePerProductCode extends CartExtension.Shippin
 
                         try
                         {
-                            shippingCostByProductCode = this.cachedRateMap.get(cartItem.getProductCode());
+                            shippingCostByProductCode = this.cachedRateMap.get(cartItem.getSku());
                         }
                         catch(Exception ex)
                         {
-                            System.debug('## Exception caught in map lookup for ProductCode: ' + cartItem.getProductCode() + 'Falling back to rate of: ' + SHIPPING_COST_FALLBACK_RATE);
+                            System.debug('## Exception caught in map lookup for ProductCode: ' + cartItem.getSku() + 'Falling back to rate of: ' + SHIPPING_COST_FALLBACK_RATE);
                         }
 
                         Decimal perLineItemWithQtyShipping = cartItem.getQuantity() * shippingCostByProductCode;
@@ -245,7 +246,7 @@ public class LwrCca_ShippingFlatRatePerProductCode extends CartExtension.Shippin
                 }
             }
 
-            CartExtension.CartDeliveryGroupMethod cartDeliveryGroupMethod01 = new CartExtension.CartDeliveryGroupMethod('Per Item Shipping', runningShippingTotal, shippingProduct);
+            CartExtension.CartDeliveryGroupMethod cartDeliveryGroupMethod01 = new CartExtension.CartDeliveryGroupMethod('Per Product Code Shipping', runningShippingTotal, shippingProduct);
             cartDeliveryGroupMethod01.setCarrier('USPS');
             cartDeliveryGroupMethod01.setClassOfService('Per Product Code Shipping');
             cartDeliveryGroupMethodCollection.add(cartDeliveryGroupMethod01);
