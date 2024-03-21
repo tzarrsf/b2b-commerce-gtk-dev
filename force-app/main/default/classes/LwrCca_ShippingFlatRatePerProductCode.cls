@@ -130,7 +130,7 @@ public class LwrCca_ShippingFlatRatePerProductCode extends CartExtension.Shippin
      */
     public virtual override void calculate(CartExtension.CartCalculateCalculatorRequest request)
     {
-        System.debug('## INVOCATION: LwrCca_ShippingFlatRatePerQuantity.calculate called.');
+        System.debug('## INVOCATION: LwrCca_ShippingFlatRatePerProductCode.calculate called.');
         CartExtension.Cart cart = request.getCart();
 
         /***
@@ -154,7 +154,7 @@ public class LwrCca_ShippingFlatRatePerProductCode extends CartExtension.Shippin
 
         if (cartDeliveryGroups.size() == 0)
         {
-            System.debug('## EMPTY CART: LwrCca_ShippingFlatRatePerQuantity.calculate');
+            System.debug('## EMPTY CART: LwrCca_ShippingFlatRatePerProductCode.calculate');
             CartExtension.CartValidationOutput cvo = new CartExtension.CartValidationOutput(
                 CartExtension.CartValidationOutputTypeEnum.SHIPPING,
                 CartExtension.CartValidationOutputLevelEnum.ERROR);
@@ -163,7 +163,7 @@ public class LwrCca_ShippingFlatRatePerProductCode extends CartExtension.Shippin
         }
         else
         {
-            System.debug('## POPULATED CART: LwrCca_ShippingFlatRatePerQuantity.calculate');
+            System.debug('## POPULATED CART: LwrCca_ShippingFlatRatePerProductCode.calculate');
             CartExtension.CartItemList cartItems = cart.getCartItems();
             CartExtension.CartDeliveryGroup cartDeliveryGroup = cartDeliveryGroups.get(0);
 
