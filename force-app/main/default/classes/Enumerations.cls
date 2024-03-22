@@ -25,6 +25,9 @@ public class Enumerations
         ANOTHERWAY2
     }
 
-    public Enum 
-
+    public Enum LocalPricingSource
+    {
+        CONNECTAPI,
+        EXAMPLECODE
+    }
 }

@@ -32,6 +32,9 @@ public class LwrCca_PricingStoreExtension extends commercestorepricing.PricingSe
     /* You MUST change the USE_EXTERNAL_SERVICE to True if you want to use the Third Party Service. */
     private static final Boolean USE_EXTERNAL_SERVICE = false;
 
+    /** The methdology to use for shipping calculations */
+    private static Enumerations.LocalPricingSource localPricingSource = Enumerations.LocalPricingSource.CONNECTAPI;
+
     /*
     Override processPrice method in order to change behavior of the pricing of single product.
     Fields that can be overriden are...
