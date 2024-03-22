@@ -1,11 +1,11 @@
 /**
  * @description       : This class is a current script example as of the Spring '24 release for checking that a Shipping Product Placeholder
  *                      of type Product2 exists. If it doesn't then a product will be created. This is part of the This script is part of
- *                      the Salesforce Partner Learning Camp Curriculum "B2B Commerce: Developer Essentials" activity "Configure a Cart
+ *                      the Salesforce Partner Learning Camp course "B2B Commerce: Developer Essentials" activity "Configure a Cart
  *                      Orchestrator."
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-19-2024
+ * @last modified on  : 03-22-2024
  * @last modified by  : Tom Zarr
 **/
 

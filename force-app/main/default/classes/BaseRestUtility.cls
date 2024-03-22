@@ -1,11 +1,11 @@
 /**
  * @description       : Helper class to facilitate generic REST calls and integrate them into other Apex code. This is part of a few different
- *                      partner learning camp curricula. This one is used in the Salesforce Partner Learning Camp Curriculum "B2B Commerce:
+ *                      partner learning camp curricula. This one is used in the Salesforce Partner Learning Camp course "B2B Commerce:
  *                      Developer Essentials" activity "Scripted Import" any any other place where a direct REST API call is needed if there
  *                      isn't a ConnectAPI equivalent (or I couldn't find one).
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Readiness (2023)
- * @last modified on  : 03-14-2024
+ * @last modified on  : 03-22-2024
  * @last modified by  : Tom Zarr
 **/
 public virtual class BaseRestUtility {

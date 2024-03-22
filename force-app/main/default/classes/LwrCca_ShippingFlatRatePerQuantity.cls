@@ -1,12 +1,12 @@
 /**
  * @description       : This code is a teaching example current with the Spring '24 release meant to provide a flat shipping rate which is multiplied
  *                      against the number of items in the cart. This class is current with the Spring '24 release and a part of the
- *                      Salesforce Partner Learning Camp Curriculum "B2B Commerce: Developer Essentials" and specific to these activities:
+ *                      Salesforce Partner Learning Camp course "B2B Commerce: Developer Essentials" and specific to these activities:
  *                          1. Implement a Shipping Provider
  *                          2. Configure a Cart Orchestrator
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-20-2024
+ * @last modified on  : 03-22-2024
  * @last modified by  : Tom Zarr
 **/
 public class LwrCca_ShippingFlatRatePerQuantity extends CartExtension.ShippingCartCalculator

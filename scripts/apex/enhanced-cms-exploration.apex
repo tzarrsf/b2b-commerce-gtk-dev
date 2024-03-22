@@ -1,11 +1,11 @@
 /**
  * @description       : This script is a totally linear approach used to interrogate the Enhanced CMS objects at both the SOQL and API levels in order to
  *                      build the ScriptedImportLevel4 and ScriptedImportLevel5 classes current with the Spring '24 release. This script is part of the
- *                      Salesforce Partner Learning Camp Curriculum "B2B Commerce: Developer Essentials" activity "Scripted Import." You can run this in an
+ *                      Salesforce Partner Learning Camp course "B2B Commerce: Developer Essentials" activity "Scripted Import." You can run this in an
  *                      Execute Anonymous context after setting the CONSTANTS.
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-14-2024
+ * @last modified on  : 03-22-2024
  * @last modified by  : Tom Zarr
 **/
 

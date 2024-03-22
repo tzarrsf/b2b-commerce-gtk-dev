@@ -1,9 +1,9 @@
 /**
  * @description       : This script is a level 2 example of a scripted import current with the Spring '24 release. This script is part of the
- *                      Salesforce Partner Learning Camp Curriculum "B2B Commerce: Developer Essentials" activity "Scripted Import."
+ *                      Salesforce Partner Learning Camp course "B2B Commerce: Developer Essentials" activity "Scripted Import."
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-07-2024
+ * @last modified on  : 03-22-2024
  * @last modified by  : Tom Zarr
 **/
 

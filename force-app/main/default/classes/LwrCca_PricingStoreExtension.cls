@@ -1,15 +1,19 @@
 /**
- * @description       : This sample is for the situation when the pricing behavior needs to be extended or overriden via
- *                      the extension point for Salesorce Internal Pricing Api. For Salesforce Internal Price
- *                      calculation, please see the corresponding documentation.
+ * @description       : This class is current with the Spring '24 release and a part of the Salesforce Partner Learning Camp
+ *                      Course "B2B Commerce: Developer Essentials" and specific to these activities:
  *
- *                      Your custom apex class must be linked to the pricing extension point and then the integration
- *                      must be linked to the webstore via appropriate setup. For more information related to that,
- *                      please see the corresponding documentation.
+ *                          1. Implement a Shipping Provider
+ *                          2. Configure a Cart Orchestrator
  *
- *                      This must implement the commercestorepricing.PricingService class in order to be processed by the
- *                      pricing flow.
- * 
+ *                      This sample code handles the situation when the pricing behavior needs to be extended or overriden.
+ *                      This is especially useful if you are sourcing pricing data from elsewhere such as in an ERP. For
+ *                      Salesforce Internal Price calculation, please contult the corresponding documentation.
+ *
+ *                      Your custom apex class must extend the commercestorepricing.PricingService abstract base class in
+ *                      order to be processed by the pricing flow. The pricing extension point and then the integration
+ *                      must be linked to the webstore in the Commerce app as covered in the B2B Commerce: Developer
+ *                      Essentials course.
+ *
  *                      Main documentation source: https://developer.salesforce.com/docs/commerce/salesforce-commerce/guide/PricingCartCalculator.html
  *
  * @author            : Tom Zarr
@@ -27,9 +31,10 @@ public class LwrCca_PricingStoreExtension extends commercestorepricing.PricingSe
 
     /* You MUST change the USE_EXTERNAL_SERVICE to True if you want to use the Third Party Service. */
     private static final Boolean USE_EXTERNAL_SERVICE = false;
+
     /*
     Override processPrice method in order to change behavior of the pricing of single product.
-    Fields that can be overriden are:
+    Fields that can be overriden are...
         At Header level:
             currency and error
         At Item level:
@@ -61,7 +66,7 @@ public class LwrCca_PricingStoreExtension extends commercestorepricing.PricingSe
         // Create response using this data
         commercestorepricing.PricingResponse response = new commercestorepricing.PricingResponse('USD');
 
-        //TODO: Move to iterator
+        //TODO: Move to iterator for consistency?
         for (Integer i = 0; i < items.size(); i++)
         {
             String productId = items.get(i).getProductId();
@@ -85,9 +90,7 @@ public class LwrCca_PricingStoreExtension extends commercestorepricing.PricingSe
             else
             {
                 // Successful response item
-                PriceDataFromExternalService dataFromExternalService = pricesFromExternalService.get(
-                productId
-                );
+                PriceDataFromExternalService dataFromExternalService = pricesFromExternalService.get(productId);
                 commercestorepricing.PricingResponseItem responseItem = new commercestorepricing.PricingResponseItem(
                     productId,
                     null,
@@ -130,7 +133,7 @@ public class LwrCca_PricingStoreExtension extends commercestorepricing.PricingSe
 
     /**
     Override processTransactionalPrice method in order to change behavior of the pricing of multiple
-    products within a transaction. Fields that can be overriden are:
+    products within a transaction. Fields that can be overriden are...
         At header level:
             currency, error, total list price, total product  amount, total adjustment amount and total amount.
         At Item level:

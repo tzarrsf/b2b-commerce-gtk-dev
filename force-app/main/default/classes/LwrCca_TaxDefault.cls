@@ -3,7 +3,7 @@
  *                      information for a cart item and its adjustments and saves it to a cart data transfer object
  *                      (DTO). For a tax calculator extension to be processed by the checkout flow, you must implement the
  *                      CartExtension.TaxCartCalculator class. This class is current with the Spring '24 release and a part of the
- *                      Salesforce Partner Learning Camp Curriculum "B2B Commerce: Developer Essentials" and specific to these activities:
+ *                      Salesforce Partner Learning Camp course "B2B Commerce: Developer Essentials" and specific to these activities:
  *                          1. Implement a Tax Provider
  *                          2. Configure a Cart Orchestrator
  *
@@ -11,7 +11,7 @@
  *
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-20-2024
+ * @last modified on  : 03-22-2024
  * @last modified by  : Tom Zarr
 **/
 public class LwrCca_TaxDefault extends CartExtension.TaxCartCalculator {

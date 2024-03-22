@@ -1,11 +1,11 @@
 /**
  * @description       : This script is a level 4 example of a scripted import current with the Spring '24 release. This script is part of the
- *                      Salesforce Partner Learning Camp Curriculum "B2B Commerce: Developer Essentials" activity "Scripted Import." This
+ *                      Salesforce Partner Learning Camp course "B2B Commerce: Developer Essentials" activity "Scripted Import." This
  *                      approach assumes known product image urls for the product list and first detail image and is dependent on the class
  *                      ScriptedImportLevel4Element as a DTO.
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-11-2024
+ * @last modified on  : 03-22-2024
  * @last modified by  : Tom Zarr
 **/
 public with sharing class ScriptedImportLevel4Truffles {

@@ -1,10 +1,10 @@
 /**
  * @description       : This script is a basic example of a scripted import for shipping costs associated to individual product codes.
- *                      It's current with the Spring '24 release. This is part of the Salesforce Partner Learning Camp Curriculum
+ *                      It's current with the Spring '24 release. This is part of the Salesforce Partner Learning Camp course
  *                      "B2B Commerce: Developer Essentials" activity "Configure a Cart Orchestrator."
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-19-2024
+ * @last modified on  : 03-22-2024
  * @last modified by  : Tom Zarr
 **/
 
