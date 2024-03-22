@@ -4,9 +4,11 @@
  *                      Learning Camp Curriculum "B2B Commerce: Developer Essentials" and specific to these activities:
  *                          1. Implement a Shipping Provider
  *                          2. Configure a Cart Orchestrator
+ *                      This class requires that you create a default cache partition. Consult the documentation for details:
+ *                      https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_cache_partition_setup.htm
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-20-2024
+ * @last modified on  : 03-21-2024
  * @last modified by  : Tom Zarr
 **/
 public class LwrCca_ShippingFlatRatePerProductCode extends CartExtension.ShippingCartCalculator {
@@ -18,19 +20,13 @@ public class LwrCca_ShippingFlatRatePerProductCode extends CartExtension.Shippin
     */
     public static final String SHIPPING_PRODUCT_MONIKER = 'Shipping Product Placeholder';
 
-    /**
-    * The product for shipping represented in ProductCode.
-    */
+    /** The product for shipping represented in ProductCode. */
     public static final String SHIPPING_PRODUCT_CODE = SHIPPING_PRODUCT_MONIKER;
 
-    /**
-    * The product for shipping represented in the SKU.
-    */
+    /** The product for shipping represented in the SKU. */
     public static final String SHIPPING_PRODUCT_STOCK_KEEPING_UNIT = SHIPPING_PRODUCT_MONIKER;
 
-    /**
-    * The product for shipping represented in the Name.
-    */
+    /** The product for shipping represented in the Name. */
     public static final String SHIPPING_PRODUCT_NAME = SHIPPING_PRODUCT_MONIKER;
 
     /** The fallback rate for shipping should the rate not be found in the ProductCodeShippingRate__c lookup. */
@@ -39,21 +35,20 @@ public class LwrCca_ShippingFlatRatePerProductCode extends CartExtension.Shippin
     /** The methdology to use for shipping calculations */
     Enumerations.CalculationMethodology calculationMethodology = Enumerations.CalculationMethodology.ITEM;
 
-    /** Underlying member for the property initialized collection of SHIPPING_PRODUCTS */
+    /** Underlying variable for the property initialized collection of SHIPPING_PRODUCTS */
     private static final List<Product2> SHIPPING_PRODUCTS;
 
-    /**
-     * The key for storeing the PRODUCT_CODE_SHIPPING_RATES in the Org-level Cache
-     */
+    /** The key for storing the PRODUCT_CODE_SHIPPING_RATES in the Org-level Cache */
     private static final String PRODUCT_CODE_SHIPPING_RATES_ORG_CACHE_KEY = 'productCodeShippingRates';
 
     /**
-     * Using a static initializer should allow us to do only one scan of our custom object from initial deployment / first call,
-     * then have this in memory to avoid pummeling the data tier. The class should die immediately if the expected shipping
-     * product isn't located.
+     * Using a static initializer should allow us to do a single scan of our shipping product from initial deployment / first call,
+     * then have it in memory to avoid pummeling the data tier. The class should die immediately if the expected shipping product
+     * isn't located.
      */
     static
     {
+        // Set up the Shipping Product Placeholder
         if(SHIPPING_PRODUCTS == null || SHIPPING_PRODUCTS.size() == 0)
         {
             SHIPPING_PRODUCTS = [
@@ -68,59 +63,89 @@ public class LwrCca_ShippingFlatRatePerProductCode extends CartExtension.Shippin
                     AND ProductCode = :SHIPPING_PRODUCT_CODE LIMIT 1
             ];
 
-            if(SHIPPING_PRODUCTS.size() == 0) {
+            if(SHIPPING_PRODUCTS.size() == 0)
+            {
                 throw new NoShippingProductPlaceholderException();
             }
         }
     }
 
-    public LwrCca_ShippingFlatRatePerProductCode() {}
-
     /**
-     * Since I used a static constructor in the other example for the shipping products, I'll use a C#-style property here for
-     * the cached product code rates. In theory, this should provide a 'singleton-ish' approxmiation so we're checking for valid
-     * setup data while not pummeling the data tier for it. The class should die immediately if the expected object isn't located.
-     * I'm not going to get all fancy with this example doing cache invalidation, etc, but I'll check that the object is present,
-     * that the map is intialized and make an assignment if not. This approach maps well to a remote system call fetching a
+     * Since I used a static constructor in the other example for the shipping products and cache partition, I'll use a C#-style
+     * property here for the cached product code rates. In theory, this should provide a 'singleton-ish' behavior so we're checking
+     * for valid setup data while not pummeling the data tier for it. The class should die immediately if the expected object isn't
+     * located. I'm not going to get all fancy doing cache invalidation, TTL, etc, but I'll check that the object is present,
+     * that the map is intialized, then make an assignment if not. This approach maps well to a remote system call fetching a
      * 'skinny table.' Keep in mind this is a teaching example and a table with a massive amount of rows could lead to exceptions
-     * or limits. In such a case you could possibly batch load things into org-level cache or use categories as an additional
-     * layer of cache keying for locating child records, then hone in on particulars.
+     * or limits. In such a case, you could possibly batch load things into org-level cache or use categories or additional partitions
+     * as an additional layer of cache keying for locating child records, then hone in on particulars.
      */
     public Map<String, Decimal> cachedRateMap
     {
         get
         {
-            if(Cache.Org.get(PRODUCT_CODE_SHIPPING_RATES_ORG_CACHE_KEY) == null)
+            System.debug('## Getting Cached Rate map (cachedRateMap)... class: LwrCca_ShippingFlatRatePerProductCode');
+
+            Map<String, Decimal> rateMap;
+
+            try
             {
+                if (Cache.Org.contains(PRODUCT_CODE_SHIPPING_RATES_ORG_CACHE_KEY))
+                {
+                    System.debug('## ' + PRODUCT_CODE_SHIPPING_RATES_ORG_CACHE_KEY + ' found in cache...');
+                    rateMap = (Map<String, Decimal>)Cache.Org.get(PRODUCT_CODE_SHIPPING_RATES_ORG_CACHE_KEY);
+                    System.debug('## Returning ' + PRODUCT_CODE_SHIPPING_RATES_ORG_CACHE_KEY + ' with ' + rateMap.keySet().size() + ' keys');
+                }
+            }
+            catch(Exception e)
+            {
+                System.debug('## EXCEPTION: ' + e.getMessage());
+            }
+
+            // If null or empty push the map into org-level cache
+            if(rateMap == null || rateMap.keySet().size() == 0)
+            {
+                System.debug('## Cached Rate map (cachedRateMap) was null or had no keys - class: LwrCca_ShippingFlatRatePerProductCode');
+
                 List<ProductCodeShippingRate__c> productCodeShippingRates;
 
-                try{
-                    productCodeShippingRates = [
-                        SELECT
-                            ProductCode__c,
-                            Rate__c
-                        FROM
-                            ProductCodeShippingRate__c
-                    ];
+                productCodeShippingRates = [
+                    SELECT
+                        ProductCode__c,
+                        Rate__c
+                    FROM
+                        ProductCodeShippingRate__c
+                ];
 
-                    // Assuming the object was deployed and we made it this far create a local map
-                    Map<String, Decimal> rateMap = new Map<String, Decimal>();
+                // Assuming the ProductCodeShippingRate__c exists in the org and we made it this far, create a local map
+                rateMap = new Map<String, Decimal>();
 
-                    for(ProductCodeShippingRate__c element : productCodeShippingRates)
-                    {
-                        rateMap.put(element.ProductCode__c, element.Rate__c);
-                    }
+                System.debug('## Adding to rateMap...' );
 
-                    // Push the map into Org cache
+                for(ProductCodeShippingRate__c element : productCodeShippingRates)
+                {
+                    System.debug('## Adding element with ProductCode__c: ' + element.ProductCode__c + ' , Rate__c: ' + element.Rate__c);
+                    rateMap.put(element.ProductCode__c, element.Rate__c);
+                }
+
+                System.debug('## Adding to rateMap complete.' );
+
+                // Push the rateMap into Org-level cache
+                try
+                {
+                    System.debug('## Push the rateMap on to the Org-level cache');
                     Cache.Org.put(PRODUCT_CODE_SHIPPING_RATES_ORG_CACHE_KEY, rateMap);
                 }
                 catch(Exception ex)
                 {
+                    System.debug('## EXCEPTION during cache put operation');
                     throw new NoProductCodeShippingRateObjectException();
                 }
             }
 
-            return (Map<String, Decimal>)Cache.Org.get(PRODUCT_CODE_SHIPPING_RATES_ORG_CACHE_KEY);
+            // Return from Cache
+            rateMap = (Map<String, Decimal>)Cache.Org.get(PRODUCT_CODE_SHIPPING_RATES_ORG_CACHE_KEY);
+            return rateMap;
         }
     }
 
@@ -194,9 +219,11 @@ public class LwrCca_ShippingFlatRatePerProductCode extends CartExtension.Shippin
              */
 
             Decimal runningShippingTotal = 0.00;
-            // Get this from the in-memory map - the property we stuff into Org-level cache
-            Decimal shippingCostByProductCode = 0.00;
+            Decimal shippingCostByProductCode = SHIPPING_COST_FALLBACK_RATE;
             Iterator<CartExtension.CartItem> cartItemsCollectionIterator = cartItems.iterator();
+
+            // Get the rates from the in-memory map (org-level cache)
+            System.debug('## Get the rates from the in-memory map (org-level cache) - class: LwrCca_ShippingFlatRatePerProductCode');
 
             switch on calculationMethodology
             {
@@ -210,11 +237,11 @@ public class LwrCca_ShippingFlatRatePerProductCode extends CartExtension.Shippin
                         {
                             // TODO: Ask product and engineering how to get the product code while iterating the cart items
                             // The getSku() call is a hack to make the deployment work for now
-                            shippingCostByProductCode = this.cachedRateMap.get(cartItem.getSku());
+                            shippingCostByProductCode = cachedRateMap.get(cartItem.getSku());
                         }
                         catch(Exception ex)
                         {
-                            System.debug('## Exception caught in map lookup for ProductCode: ' + cartItem.getSku() + 'Falling back to rate of: ' + SHIPPING_COST_FALLBACK_RATE);
+                            System.debug('## Exception caught in map lookup for ProductCode: ' + cartItem.getSku() + ' in LwrCca_ShippingFlatRatePerProductCode - falling back to rate of: ' + SHIPPING_COST_FALLBACK_RATE + ' Message: ' + ex.getMessage());
                         }
 
                         runningShippingTotal = cartItems.size() * shippingCostByProductCode;
@@ -228,11 +255,11 @@ public class LwrCca_ShippingFlatRatePerProductCode extends CartExtension.Shippin
 
                         try
                         {
-                            shippingCostByProductCode = this.cachedRateMap.get(cartItem.getSku());
+                            shippingCostByProductCode = cachedRateMap.get(cartItem.getSku());
                         }
                         catch(Exception ex)
                         {
-                            System.debug('## Exception caught in map lookup for ProductCode: ' + cartItem.getSku() + 'Falling back to rate of: ' + SHIPPING_COST_FALLBACK_RATE);
+                            System.debug('## Exception caught in map lookup for ProductCode: ' + cartItem.getSku() + ' in LwrCca_ShippingFlatRatePerProductCode - falling back to rate of: ' + SHIPPING_COST_FALLBACK_RATE + ' Message: ' + ex.getMessage());
                         }
 
                         Decimal perLineItemWithQtyShipping = cartItem.getQuantity() * shippingCostByProductCode;
@@ -241,7 +268,7 @@ public class LwrCca_ShippingFlatRatePerProductCode extends CartExtension.Shippin
                 }
                 when else
                 {
-                    System.debug('Fell into else block of switch statement. Nothing implemented yet for this.');
+                    System.debug('## Fell into else block of switch statement in LwrCca_ShippingFlatRatePerProductCode - Nothing implemented yet for this.');
                     throw new NotImplementedException();
                 }
             }
