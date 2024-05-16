@@ -13,7 +13,7 @@
  *
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-16-2024
+ * @last modified on  : 03-27-2024
  * @last modified by  : Tom Zarr
 **/
 global class LwrCca_CartOrchestrator extends CartExtension.CartCalculate
@@ -109,7 +109,7 @@ global class LwrCca_CartOrchestrator extends CartExtension.CartCalculate
         }
 
         /**
-         * Work in Progress - not used at the moment
+         * Call taxes
          */
         if (runTaxes) {
             System.debug('## runTaxes was true. Calling taxes(calculatorRequest)...');
