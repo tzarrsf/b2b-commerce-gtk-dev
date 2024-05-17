@@ -2,6 +2,8 @@
 // You can execute queries in VS Code by selecting the
 //     query text and running the command:
 //     SFDX: Execute SOQL Query with Currently Selected Text
+// Please Note:
+// Depending on your org edition and configuration, the CurrencyIsoCode field may not be present
 
 SELECT
     Id, OrderNumber, TotalAmount, CurrencyIsoCode, Status, PoNumber,
