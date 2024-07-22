@@ -28,7 +28,7 @@ public class LwrCca_InventoryCustom extends commerce_inventory.CommerceInventory
         commerce_inventory.InventoryReservation currentReservation,
         String reservationChangeType)
     {
-        system.debug('*** In the B2BCustomInventoryService.upsertReservation ***');
+        system.debug('*** In the LwrCca_InventoryCustom.upsertReservation ***');
         system.debug('upsertReservationRequest: ' + upsertReservationRequest);
         system.debug('currentReservation: ' + currentReservation);
         system.debug('reservationChangeType: ' + reservationChangeType);
@@ -38,7 +38,7 @@ public class LwrCca_InventoryCustom extends commerce_inventory.CommerceInventory
 
     public override commerce_inventory.DeleteReservationResponse deleteReservation(String reservationId,  commerce_inventory.InventoryReservation currentReservation)
     {
-        system.debug('*** In the B2BCustomInventoryService.deleteReservation ***');
+        system.debug('*** In the LwrCca_InventoryCustom.deleteReservation ***');
         system.debug('reservationId: ' + reservationId);
         system.debug('currentReservation: ' + currentReservation);
 
@@ -47,7 +47,7 @@ public class LwrCca_InventoryCustom extends commerce_inventory.CommerceInventory
 
     public override commerce_inventory.InventoryReservation getReservation(String reservationId)
     {
-        system.debug('*** In the B2BCustomInventoryService.getReservation ***');
+        system.debug('*** In the LwrCca_InventoryCustom.getReservation ***');
         system.debug('reservationId: ' + reservationId);
 
         return super.getReservation(reservationId);
@@ -55,7 +55,7 @@ public class LwrCca_InventoryCustom extends commerce_inventory.CommerceInventory
 
     public override commerce_inventory.InventoryCheckAvailability checkInventory(commerce_inventory.InventoryCheckAvailability request)
     {
-        system.debug('*** In the B2BCustomInventoryService.checkInventory ***');
+        system.debug('*** In the LwrCca_InventoryCustom.checkInventory ***');
         system.debug('request: ' + request);
 
         return super.checkInventory(request);
@@ -64,7 +64,7 @@ public class LwrCca_InventoryCustom extends commerce_inventory.CommerceInventory
     public override commerce_inventory.InventoryLevelsResponse getInventoryLevel(commerce_inventory.InventoryLevelsRequest request)
     {
         // This is the method called when the Product Details Page is accessed or refreshed.
-        system.debug('*** In the B2BCustomInventoryService.getInventoryLevel ***');
+        system.debug('*** In the LwrCca_InventoryCustom.getInventoryLevel ***');
         system.debug('request.getInventoryLocationSourceType(): ' + request.getInventoryLocationSourceType());
 
         Set<commerce_inventory.InventoryLevelsItemRequest> setInvLevelItemRequest =  request.getItemInventoryLevelRequests();
