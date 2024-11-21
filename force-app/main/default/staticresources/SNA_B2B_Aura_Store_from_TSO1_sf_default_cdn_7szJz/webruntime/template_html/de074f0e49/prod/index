@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="{language}">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script type="text/javascript">
+            {errorHandlerScript}
+        </script>
+        {webruntimeInit}
+        {headmarkup}
+        
+        <!-- webruntime-branding-shared stylesheets -->
+        <link rel="stylesheet" href="assets/styles/salesforce-lightning-design-system.min.css?{ versionKey }"/>
+        <link rel="stylesheet" href="assets/styles/dxp-site-spacing-styling-hooks.min.css?{ versionKey }"/>
+        <link rel="stylesheet" href="assets/styles/dxp-styling-hooks.min.css?{ versionKey }"/>
+        <link rel="stylesheet" href="assets/styles/dxp-slds-extensions.min.css?{ versionKey }"/>
+        <!-- webruntime-branding-shared stylesheets -->
+        <link rel="stylesheet" href="assets/styles/styles.css?{ versionKey }"/>
+        <link rel="stylesheet" href="assets/css/fonts-and-custom.css?{ versionKey }"/>
+    </head>
+    <body>
+        <webruntime-app></webruntime-app>
+    </body>
+</html>

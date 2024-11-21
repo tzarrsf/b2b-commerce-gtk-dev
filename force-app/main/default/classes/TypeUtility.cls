@@ -1,10 +1,10 @@
 /**
- * @description       : This code helps fill some gaps and limitations with Apex, Namely that it does not support generics or late beinding
+ * @description       : This code helps fill some gaps and limitations with Apex, Namely that it does not support generics or late binding
  *                      and I wanted to know the type at runtime for conversions without having to write the same loops everywhere. This
  *                      helps preserve the "D.R.Y." principle in code examples.
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-11-2024
+ * @last modified on  : 07-25-2024
  * @last modified by  : Tom Zarr
 **/
 public with sharing class TypeUtility {

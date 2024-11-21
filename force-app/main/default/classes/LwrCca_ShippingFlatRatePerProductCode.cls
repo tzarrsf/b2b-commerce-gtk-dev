@@ -8,7 +8,7 @@
  *                      https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_cache_partition_setup.htm
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-21-2024
+ * @last modified on  : 11-20-2024
  * @last modified by  : Tom Zarr
 **/
 public class LwrCca_ShippingFlatRatePerProductCode extends CartExtension.ShippingCartCalculator {
@@ -65,7 +65,7 @@ public class LwrCca_ShippingFlatRatePerProductCode extends CartExtension.Shippin
 
             if(SHIPPING_PRODUCTS.size() == 0)
             {
-                throw new NoShippingProductPlaceholderException();
+                throw new NoShippingProductPlaceholderException('Not Shipping Products available');
             }
         }
     }
@@ -139,7 +139,7 @@ public class LwrCca_ShippingFlatRatePerProductCode extends CartExtension.Shippin
                 catch(Exception ex)
                 {
                     System.debug('## EXCEPTION during cache put operation');
-                    throw new NoProductCodeShippingRateObjectException();
+                    throw new NoProductCodeShippingRateObjectException(ex);
                 }
             }
 

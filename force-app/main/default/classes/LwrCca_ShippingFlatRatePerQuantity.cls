@@ -6,7 +6,7 @@
  *                          2. Configure a Cart Orchestrator
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 03-22-2024
+ * @last modified on  : 11-20-2024
  * @last modified by  : Tom Zarr
 **/
 public class LwrCca_ShippingFlatRatePerQuantity extends CartExtension.ShippingCartCalculator
@@ -63,7 +63,7 @@ public class LwrCca_ShippingFlatRatePerQuantity extends CartExtension.ShippingCa
             ];
 
             if(SHIPPING_PRODUCTS.size() == 0) {
-                throw new NoShippingProductPlaceholderException();
+                throw new NoShippingProductPlaceholderException('Not Shipping Products available');
             }
         }
     }
