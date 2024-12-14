@@ -2,11 +2,11 @@
  * @description       : This code... [Fill in the rest!]
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 12-13-2024
+ * @last modified on  : 12-14-2024
  * @last modified by  : Tom Zarr
 **/
 @isTest
-public class LwrCca_VertexTaxProviderTest {
+public class LwrCca_TaxVertexProviderTest {
     
      @testSetup
     static void setup(){
@@ -36,7 +36,7 @@ public class LwrCca_VertexTaxProviderTest {
        LwrCca_TaxProviderRequest taxRequest = taxProviderRequest();
        Map<String, String> callOutRequest = new Map<String, String>();
        Test.startTest();
-       LwrCca_VertexTaxProvider vtax = new LwrCca_VertexTaxProvider();
+       LwrCca_TaxVertexProvider vtax = new LwrCca_TaxVertexProvider();
        vtax.prepareCreateTransaction(taxRequest, callOutRequest);
         String expectedRequestBody = '{"type":"SalesInvoice","currencyCode":"USD","commit":false,"companyCode":"ABC","customerCode":"123","businessIdentificationNo":"987","exemptionNo":"EXEMPT","entityUseCode":"USE","date":"2023-03-15","lines":[{"number":"1","itemCode":"SKU123","amount":100,"taxIncluded":false}]}';
         System.assertNotEquals(expectedRequestBody, callOutRequest.get(Constants.SERVICE_REQUEST_BODY));
@@ -47,7 +47,7 @@ public class LwrCca_VertexTaxProviderTest {
         LwrCca_TaxProviderRequest taxRequest = taxProviderRequest();
         taxRequest.hasMultipleShipments = false;
         Map<String, String> callOutRequest = new Map<String, String>();
-        LwrCca_VertexTaxProvider provider = new LwrCca_VertexTaxProvider();
+        LwrCca_TaxVertexProvider provider = new LwrCca_TaxVertexProvider();
         provider.prepareCreateTransaction(taxRequest, callOutRequest);
         String expectedRequestBody = '{"type":"SalesInvoice","currencyCode":"USD","commit":false,"companyCode":"ABC","customerCode":"123","businessIdentificationNo":"987","exemptionNo":"EXEMPT","entityUseCode":"USE","date":"2023-03-15","lines":[{"number":"1","itemCode":"SKU123","amount":100,"taxIncluded":false}]}';
         System.assertNotEquals(expectedRequestBody, callOutRequest.get(Constants.SERVICE_REQUEST_BODY));
@@ -58,7 +58,7 @@ public class LwrCca_VertexTaxProviderTest {
         LwrCca_TaxProviderRequest taxRequest = taxProviderRequest();
         taxRequest.taxableCartItems = null;
         Map<String, String> callOutRequest = new Map<String, String>();
-        LwrCca_VertexTaxProvider provider = new LwrCca_VertexTaxProvider();
+        LwrCca_TaxVertexProvider provider = new LwrCca_TaxVertexProvider();
         provider.prepareCreateTransaction(taxRequest, callOutRequest);
         String expectedRequestBody = '{"type":"SalesInvoice","currencyCode":"USD","commit":false,"companyCode":"ABC","customerCode":"123","businessIdentificationNo":"987","exemptionNo":"EXEMPT","entityUseCode":"USE","date":"2023-03-15","lines":[{"number":"1","itemCode":"SKU123","amount":100,"taxIncluded":false}]}';
         System.assertNotEquals(expectedRequestBody, callOutRequest.get(Constants.SERVICE_REQUEST_BODY));
@@ -68,7 +68,7 @@ public class LwrCca_VertexTaxProviderTest {
     static void testgetTaxFromResponse(){
         LwrCca_TaxProviderRequest taxRequest = taxProviderRequest();
         String strVertexResponseBody = jsonString();
-        LwrCca_VertexTaxProvider avalaraTax = new LwrCca_VertexTaxProvider();
+        LwrCca_TaxVertexProvider avalaraTax = new LwrCca_TaxVertexProvider();
         Test.startTest();
         avalaraTax.getTaxFromResponse(strVertexResponseBody,taxRequest);
         Test.stopTest();
@@ -77,7 +77,7 @@ public class LwrCca_VertexTaxProviderTest {
     static void testprepareCommitTransaction(){
         LwrCca_TaxProviderRequest taxRequest = taxProviderRequest();
         Map<String, String> callOutRequest = new Map<String, String>();
-        LwrCca_VertexTaxProvider avalaraTax = new LwrCca_VertexTaxProvider();
+        LwrCca_TaxVertexProvider avalaraTax = new LwrCca_TaxVertexProvider();
         Test.startTest();
         avalaraTax.prepareCommitTransaction(taxRequest, callOutRequest);
         Test.stopTest();

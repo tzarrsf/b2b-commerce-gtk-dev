@@ -2,11 +2,11 @@
  * @description       : This code... [Fill in the rest!]
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 12-13-2024
+ * @last modified on  : 12-14-2024
  * @last modified by  : Tom Zarr
 **/
-public without sharing class LwrCca_VertexTaxProvider extends LwrCca_TaxAbstractProvider {
-  public LwrCca_VertexTaxProvider() {
+public without sharing class LwrCca_TaxVertexProvider extends LwrCca_TaxAbstractProvider {
+  public LwrCca_TaxVertexProvider() {
   }
 
   public override void prepareCreateTransaction(
@@ -17,12 +17,12 @@ public without sharing class LwrCca_VertexTaxProvider extends LwrCca_TaxAbstract
       taxRequest.hasMultipleShipments == true ? true : false;
 
     
-    LwrCca_VertexTaxRequest vertexRequest = new LwrCca_VertexTaxRequest();
+    LwrCca_TaxVertexRequest vertexRequest = new LwrCca_TaxVertexRequest();
     vertexRequest.transactionType = taxRequest.taxMetaData.transactionType;
     vertexRequest.saleMessageType = taxRequest.taxMetaData.documentType;
 
     //setting currency 
-    LwrCca_VertexTaxRequest.cls_currency currencyZ = new LwrCca_VertexTaxRequest.cls_currency();
+    LwrCca_TaxVertexRequest.cls_currency currencyZ = new LwrCca_TaxVertexRequest.cls_currency();
     currencyZ.isoCurrencyCodeAlpha = taxRequest.currencyCode;
     vertexRequest.currency_z = currencyZ;
 
@@ -77,13 +77,13 @@ public without sharing class LwrCca_VertexTaxProvider extends LwrCca_TaxAbstract
     LwrCca_TaxProviderResponse shippingResponse;
     System.debug('====== strvertexResponseBody : '+strvertexResponseBody);
     if (String.isNotBlank(strvertexResponseBody)) {
-      LwrCca_VertexTaxResponse vertexTaxResponse = LwrCca_VertexTaxResponse.parse(
+      LwrCca_TaxVertexResponse vertexTaxResponse = LwrCca_TaxVertexResponse.parse(
         strVertexResponseBody
       );
       if (
         vertexTaxResponse.data.lineItems != null && vertexTaxResponse.data.lineItems.size() > 0
       ) {
-        for (LwrCca_VertexTaxResponse.cls_lineItems line : vertexTaxResponse.data.lineItems) {
+        for (LwrCca_TaxVertexResponse.cls_lineItems line : vertexTaxResponse.data.lineItems) {
           String lineItemId = line.lineItemId;
           LwrCca_LineItemTaxDetails liTaxDetails = new LwrCca_LineItemTaxDetails();
           liTaxDetails.tax = 0;
@@ -102,14 +102,14 @@ public without sharing class LwrCca_VertexTaxProvider extends LwrCca_TaxAbstract
     return tpResponse;
   }
 
-  private List<LwrCca_VertexTaxRequest.cls_lineItems> prepareRequestFromExistingData(
+  private List<LwrCca_TaxVertexRequest.cls_lineItems> prepareRequestFromExistingData(
     LwrCca_TaxProviderRequest taxRequest,
     Boolean hasMultipleShipments
   ) {
-    List<LwrCca_VertexTaxRequest.cls_lineItems> lines = new List<LwrCca_VertexTaxRequest.cls_lineItems>();
+    List<LwrCca_TaxVertexRequest.cls_lineItems> lines = new List<LwrCca_TaxVertexRequest.cls_lineItems>();
     for (String id : taxRequest.taxableCartItems.keySet()) {
       LwrCca_TaxableCartItem cartItem = taxRequest.taxableCartItems.get(id);
-      LwrCca_VertexTaxRequest.cls_lineItems line = prepareLine(
+      LwrCca_TaxVertexRequest.cls_lineItems line = prepareLine(
         id,
         cartItem.sku,
         cartItem.amount,
@@ -138,14 +138,14 @@ public without sharing class LwrCca_VertexTaxProvider extends LwrCca_TaxAbstract
     return lines;
   }
 
-  private List<LwrCca_VertexTaxRequest.cls_lineItems> prepareRequestFromDB(
+  private List<LwrCca_TaxVertexRequest.cls_lineItems> prepareRequestFromDB(
     LwrCca_TaxProviderRequest taxRequest,
     Boolean hasMultipleShipments
   ) {
    
     String cartId = taxRequest.cartId;
     taxRequest.taxableCartItems = new Map<String, LwrCca_TaxableCartItem>();
-    List<LwrCca_VertexTaxRequest.cls_lineItems> lines = new List<LwrCca_VertexTaxRequest.cls_lineItems>();
+    List<LwrCca_TaxVertexRequest.cls_lineItems> lines = new List<LwrCca_TaxVertexRequest.cls_lineItems>();
     String query = 'SELECT Id, Sku, TotalLineAmount, Quantity, Type,Product2Id,Name,Product2.Family, Product2.StockKeepingUnit';
     if (hasMultipleShipments) {
       query += ',CartDeliveryGroup.Id,CartDeliveryGroup.DeliverToStreet,CartDeliveryGroup.DeliverToCity,CartDeliveryGroup.DeliverToState,CartDeliveryGroup.DeliverToPostalCode,CartDeliveryGroup.DeliverToCountry';
@@ -161,7 +161,7 @@ public without sharing class LwrCca_VertexTaxProvider extends LwrCca_TaxAbstract
       query += ' AND Type = \'Product\'';
     }
     for (CartItem cartItem : Database.query(query)) {
-      LwrCca_VertexTaxRequest.cls_lineItems line = prepareLine(
+      LwrCca_TaxVertexRequest.cls_lineItems line = prepareLine(
         cartItem.Id,
         cartItem.SKU !=null ? cartItem.SKU : cartItem.Product2.StockKeepingUnit,
         cartItem.TotalLineAmount,
@@ -189,7 +189,7 @@ public without sharing class LwrCca_VertexTaxProvider extends LwrCca_TaxAbstract
     return lines;
   }
 
-  private LwrCca_VertexTaxRequest.cls_lineItems prepareLine(
+  private LwrCca_TaxVertexRequest.cls_lineItems prepareLine(
     ID id,
     String sku,
     Decimal taxableAmount,
@@ -201,15 +201,15 @@ public without sharing class LwrCca_VertexTaxProvider extends LwrCca_TaxAbstract
     LwrCca_TaxProviderRequest taxRequest,
     Boolean setInRequestToo
   ) {
-    LwrCca_VertexTaxRequest.cls_lineItems line = new LwrCca_VertexTaxRequest.cls_lineItems();
+    LwrCca_TaxVertexRequest.cls_lineItems line = new LwrCca_TaxVertexRequest.cls_lineItems();
     line.lineItemId = id;
     line.extendedPrice = taxableAmount;
     line.fairMarketValue = taxableAmount;
     line.usage = type;
-    LwrCca_VertexTaxRequest.cls_product product = new LwrCca_VertexTaxRequest.cls_product();
+    LwrCca_TaxVertexRequest.cls_product product = new LwrCca_TaxVertexRequest.cls_product();
     product.value = sku;
     line.product = product;
-    LwrCca_VertexTaxRequest.cls_quantity prdQuantity = new LwrCca_VertexTaxRequest.cls_quantity();
+    LwrCca_TaxVertexRequest.cls_quantity prdQuantity = new LwrCca_TaxVertexRequest.cls_quantity();
     prdQuantity.value = quantity;
     line.quantity = prdQuantity;
     if (setInRequestToo) {
@@ -227,11 +227,11 @@ public without sharing class LwrCca_VertexTaxProvider extends LwrCca_TaxAbstract
   public override void prepareCommitTransaction(LwrCca_TaxProviderRequest taxRequest, Map<String, String> callOutRequest) {
 
   }
-  LwrCca_VertexTaxRequest.cls_seller setSellerDetails(
+  LwrCca_TaxVertexRequest.cls_seller setSellerDetails(
     LwrCca_TaxProviderRequest taxRequest
   ) {
-    LwrCca_VertexTaxRequest.cls_seller seller = new LwrCca_VertexTaxRequest.cls_seller();
-    LwrCca_VertexTaxRequest.cls_physicalOrigin origin = new LwrCca_VertexTaxRequest.cls_physicalOrigin();
+    LwrCca_TaxVertexRequest.cls_seller seller = new LwrCca_TaxVertexRequest.cls_seller();
+    LwrCca_TaxVertexRequest.cls_physicalOrigin origin = new LwrCca_TaxVertexRequest.cls_physicalOrigin();
     origin.streetAddress1 = taxRequest.taxMetaData.shipFromLine1;
     origin.city = taxRequest.taxMetaData.shipFromCity;
     origin.mainDivision = taxRequest.taxMetaData.shipFromState;
@@ -244,7 +244,7 @@ public without sharing class LwrCca_VertexTaxProvider extends LwrCca_TaxAbstract
     return seller;
   }
 
-  LwrCca_VertexTaxRequest.cls_customer setCustomerDetails(
+  LwrCca_TaxVertexRequest.cls_customer setCustomerDetails(
     LwrCca_TaxProviderRequest taxRequest,
     String street,
     String city,
@@ -252,8 +252,8 @@ public without sharing class LwrCca_VertexTaxProvider extends LwrCca_TaxAbstract
     String postalCode,
     String country
   ) {
-    LwrCca_VertexTaxRequest.cls_customer customer = new LwrCca_VertexTaxRequest.cls_customer();
-    LwrCca_VertexTaxRequest.cls_customerCode customerCd = new LwrCca_VertexTaxRequest.cls_customerCode();
+    LwrCca_TaxVertexRequest.cls_customer customer = new LwrCca_TaxVertexRequest.cls_customer();
+    LwrCca_TaxVertexRequest.cls_customerCode customerCd = new LwrCca_TaxVertexRequest.cls_customerCode();
      if (String.isNotBlank( taxRequest.taxMetaData.customerCode)) {
       customerCd.classCode =   taxRequest.taxMetaData.customerCode;
       customerCd.isBusinessIndicator = true; 
@@ -263,7 +263,7 @@ public without sharing class LwrCca_VertexTaxProvider extends LwrCca_TaxAbstract
 
      if (taxRequest.taxMetaData.customerTaxExemption){
       if (String.isNotBlank(taxRequest.customerExemptionCode)) {
-        LwrCca_VertexTaxRequest.cls_exemptionCertificate exemptionCertificate = new LwrCca_VertexTaxRequest.cls_exemptionCertificate();
+        LwrCca_TaxVertexRequest.cls_exemptionCertificate exemptionCertificate = new LwrCca_TaxVertexRequest.cls_exemptionCertificate();
         exemptionCertificate.exemptionCertificateNumber = taxRequest.customerExemptionCode;
         exemptionCertificate.value = taxRequest.customerExemptionCode;
         customer.exemptionCertificate = exemptionCertificate;
@@ -275,7 +275,7 @@ public without sharing class LwrCca_VertexTaxProvider extends LwrCca_TaxAbstract
         customer.exemptionReasonCode = taxRequest.entityUseCode;
        }
      }
-		LwrCca_VertexTaxRequest.cls_destination destination = new LwrCca_VertexTaxRequest.cls_destination();
+		LwrCca_TaxVertexRequest.cls_destination destination = new LwrCca_TaxVertexRequest.cls_destination();
     destination.streetAddress1 = street;
     destination.city = city;
     destination.mainDivision = state;

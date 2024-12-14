@@ -2,11 +2,11 @@
  * @description       : This code... [Fill in the rest!]
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 12-13-2024
+ * @last modified on  : 12-14-2024
  * @last modified by  : Tom Zarr
 **/
 @isTest
-public class LwrCca_VertexTaxRequestTest {
+public class LwrCca_TaxVertexRequestTest {
 
     @isTest
     static void testParse() {
@@ -162,7 +162,7 @@ public class LwrCca_VertexTaxRequestTest {
             '"transactionType": "Sale"' +
             '}';
 
-        LwrCca_VertexTaxRequest request = LwrCca_VertexTaxRequest.parse(json);
+        LwrCca_TaxVertexRequest request = LwrCca_TaxVertexRequest.parse(json);
 
     }
 }

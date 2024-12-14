@@ -6,7 +6,7 @@
  *                      https://sfdc.co/CodeItForwardRepository
  *                      https://sfdc.co/CodeItForwardRegistration
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 12-13-2024
+ * @last modified on  : 12-14-2024
  * @last modified by  : Tom Zarr
 **/
 @IsTest
@@ -68,7 +68,7 @@ public class LwrCca_TaxConfiguration_Test
             State__c = 'Test State',
             Zip_Code__c = '12345',
             Country_Code__c = 'USA',
-            Impl_Class__c = 'LwrCca_VertexTaxProvider',
+            Impl_Class__c = 'LwrCca_TaxVertexProvider',
             Request_Template__c = '{"request": "template"}'
       	);
 

@@ -2,10 +2,10 @@
  * @description       : This code... [Fill in the rest!]
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 12-13-2024
+ * @last modified on  : 12-14-2024
  * @last modified by  : Tom Zarr
 **/
-public class LwrCca_VertexTaxResponse{
+public class LwrCca_TaxVertexResponse{
 	public cls_data data;
 	public cls_meta meta;
 	public class cls_data {
@@ -152,7 +152,7 @@ public class LwrCca_VertexTaxResponse{
 		public Integer timeElapsed;	
 		public String timeReceived;
 	}
-	public static LwrCca_VertexTaxResponse parse(String json){
-		return (LwrCca_VertexTaxResponse) System.JSON.deserialize(json, LwrCca_VertexTaxResponse.class);
+	public static LwrCca_TaxVertexResponse parse(String json){
+		return (LwrCca_TaxVertexResponse) System.JSON.deserialize(json, LwrCca_TaxVertexResponse.class);
 	}
 }

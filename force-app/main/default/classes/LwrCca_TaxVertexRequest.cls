@@ -2,10 +2,10 @@
  * @description       : This code... [Fill in the rest!]
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 12-13-2024
+ * @last modified on  : 12-14-2024
  * @last modified by  : Tom Zarr
 **/
-public without sharing class LwrCca_VertexTaxRequest{
+public without sharing class LwrCca_TaxVertexRequest{
 	public String accumulationCustomerNumber;	
 	public String accumulationDocumentNumber;	
 	public String billingType;	
@@ -397,7 +397,7 @@ public without sharing class LwrCca_VertexTaxRequest{
 		public Integer isoCurrencyCodeNum;	
 		public String isoCurrencyName;	
 	}
-	public static LwrCca_VertexTaxRequest parse(String json){
-		return (LwrCca_VertexTaxRequest) System.JSON.deserialize(json, LwrCca_VertexTaxRequest.class);
+	public static LwrCca_TaxVertexRequest parse(String json){
+		return (LwrCca_TaxVertexRequest) System.JSON.deserialize(json, LwrCca_TaxVertexRequest.class);
 	}
 }
