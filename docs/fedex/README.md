@@ -25,7 +25,7 @@ There are various points where this implementation can be extended to achieve pr
   - Code
      - Following classes can be extended , details are available under respective item number
       - ShippingCartCalculatorExtension
-      - ShippingProvider
+      - LwrCca_AbstractShippingProvider
       - HTTPService
 
  ## Limitations  ##
