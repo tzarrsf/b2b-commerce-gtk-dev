@@ -2,7 +2,7 @@
  * @description       : This code... [Fill in the rest!]
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 12-14-2024
+ * @last modified on  : 12-15-2024
  * @last modified by  : Tom Zarr
 **/
 @isTest
@@ -67,7 +67,7 @@ public class LwrCca_ShippingInternalProvider_Test {
         response.days =1;
         shipProvider.cartId = webCart.id;
         shipProvider.packageWeight = 32.00;
-        shipProvider.LwrCca_ShippingMetaData = shipmeta;
+        shipProvider.shippingMetaData = shipmeta;
         shipProvider.getData('Test');
         shipProvider.addData('Test', webCart);
         Shipping_Provider__mdt testShipProvider =[Select id from Shipping_Provider__mdt where Impl_Class__c = 'LwrCca_ShippingInternalProvider' LIMIT 1];

@@ -2,7 +2,7 @@
  * @description       : This code... [Fill in the rest!]
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 12-14-2024
+ * @last modified on  : 12-15-2024
  * @last modified by  : Tom Zarr
 **/
 public class LwrCca_ShippingFedExProvider extends LwrCca_AbstractShippingProvider {
@@ -10,7 +10,7 @@ public class LwrCca_ShippingFedExProvider extends LwrCca_AbstractShippingProvide
   }
   public override void prepareRequestBody(LwrCca_ShippingProviderRequest shippingRequest,Map<String, String> callOutRequest) {
     LwrCca_ShippingFedExRateRequest requestObject = LwrCca_ShippingFedExRateRequest.parse(
-      shippingRequest.LwrCca_ShippingMetaData.requestJSON
+      shippingRequest.shippingMetaData.requestJSON
     );
     if (requestObject != null) {
       requestObject.requestedShipment.recipient.address = setShipToAddress(
@@ -82,8 +82,8 @@ public class LwrCca_ShippingFedExProvider extends LwrCca_AbstractShippingProvide
             shippingResponse = new LwrCca_ShippingProviderResponse();
             shippingResponse.serviceCode = shipmentObj.operationalDetail.serviceCode;
             shippingResponse.cost = shippingAmount;
-            shippingResponse.carrier = shippingRequest.LwrCca_ShippingMetaData.carrier;
-            shippingResponse.displayOrder = shippingRequest.LwrCca_ShippingMetaData.displayOrder;
+            shippingResponse.carrier = shippingRequest.shippingMetaData.carrier;
+            shippingResponse.displayOrder = shippingRequest.shippingMetaData.displayOrder;
             shippingMethodsWithRate.put(
               shipmentObj.operationalDetail.serviceCode,
               shippingResponse

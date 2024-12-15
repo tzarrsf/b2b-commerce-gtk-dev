@@ -2,7 +2,7 @@
  * @description       : This code... [Fill in the rest!]
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 12-14-2024
+ * @last modified on  : 12-15-2024
  * @last modified by  : Tom Zarr
 **/
 @isTest
@@ -44,7 +44,7 @@ public class LwrCca_ShippingFedExProviderTest {
         shipProvider.postalCode = '20011';
         shipProvider.country = 'United States';
         shipProvider.packageWeight = 32.00;
-        shipProvider.LwrCca_ShippingMetaData = shipmeta;
+        shipProvider.shippingMetaData = shipmeta;
         shipmeta.accountNumber ='HJ8214';
         shipmeta.carrier = 'UPS';
         shipmeta.displayOrder = 1;

@@ -2,7 +2,7 @@
  * @description       : This code... [Fill in the rest!]
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 12-14-2024
+ * @last modified on  : 12-15-2024
  * @last modified by  : Tom Zarr
 **/
 public class LwrCca_ShippingInternalProvider extends LwrCca_AbstractShippingProvider {
@@ -53,7 +53,7 @@ public class LwrCca_ShippingInternalProvider extends LwrCca_AbstractShippingProv
         Cart_Min_Weight__c,
         Shipping_Provider__c
       FROM Internal_Shipping_Rate__mdt
-      WHERE Shipping_Provider__c = :shippingRequest.LwrCca_ShippingMetaData.id AND Is_Active__c = true 
+      WHERE Shipping_Provider__c = :shippingRequest.shippingMetaData.id AND Is_Active__c = true 
     ];
     LwrCca_ShippingProviderResponse shippingResponse;
     if (shippingRates != null && shippingRates.size() > 0) {
@@ -61,8 +61,8 @@ public class LwrCca_ShippingInternalProvider extends LwrCca_AbstractShippingProv
         shippingResponse = new LwrCca_ShippingProviderResponse();
         shippingResponse.serviceCode = rate.Name__c;
         shippingResponse.cost = rate.Rate__c;
-        shippingResponse.carrier = shippingRequest.LwrCca_ShippingMetaData.carrier;
-        shippingResponse.displayOrder = shippingRequest.LwrCca_ShippingMetaData.displayOrder;
+        shippingResponse.carrier = shippingRequest.shippingMetaData.carrier;
+        shippingResponse.displayOrder = shippingRequest.shippingMetaData.displayOrder;
         shippingMethodsWithRate.put(
           shippingResponse.serviceCode,
           shippingResponse

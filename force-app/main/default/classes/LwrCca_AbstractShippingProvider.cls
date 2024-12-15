@@ -2,7 +2,7 @@
  * @description       : This code... [Fill in the rest!]
  * @author            : Tom Zarr
  * @group             : Salesforce Commerce Partner Delivery Success (2024)
- * @last modified on  : 12-14-2024
+ * @last modified on  : 12-15-2024
  * @last modified by  : Tom Zarr
 **/
 public abstract class LwrCca_AbstractShippingProvider {
@@ -14,11 +14,11 @@ public abstract class LwrCca_AbstractShippingProvider {
     Decimal shippingMinWeight = 5; // weight in lbs
     Decimal productWeight = 0;
     String cartId = shippingRequest.cartId;
-    if (shippingRequest.LwrCca_ShippingMetaData.maxPackageWeight != null) {
-      shippingMaxWeight = shippingRequest.LwrCca_ShippingMetaData.maxPackageWeight;
+    if (shippingRequest.shippingMetaData.maxPackageWeight != null) {
+      shippingMaxWeight = shippingRequest.shippingMetaData.maxPackageWeight;
     }
-    if (shippingRequest.LwrCca_ShippingMetaData.minPackageWeight != null) {
-      shippingMinWeight = shippingRequest.LwrCca_ShippingMetaData.minPackageWeight;
+    if (shippingRequest.shippingMetaData.minPackageWeight != null) {
+      shippingMinWeight = shippingRequest.shippingMetaData.minPackageWeight;
     }
 
     List<CartItem> lstCartItems = [
@@ -58,8 +58,8 @@ public abstract class LwrCca_AbstractShippingProvider {
     Map<String, String> callOutRequest = new Map<String, String>();
     String endPoint =
       Constants.CALLOUT +
-      shippingRequest.LwrCca_ShippingMetaData.namedCredentials +
-      shippingRequest.LwrCca_ShippingMetaData.endPoint;
+      shippingRequest.shippingMetaData.namedCredentials +
+      shippingRequest.shippingMetaData.endPoint;
     callOutRequest.put(Constants.END_POINT, endPoint);
     // callOutRequest.put(Constants.USERNAME , Constants.CREDENNTIALS_USERNAME);
     // callOutRequest.put(Constants.PASSWORD , Constants.CREDENNTIALS_PASSWORD);
@@ -72,19 +72,19 @@ public abstract class LwrCca_AbstractShippingProvider {
     Map<String, String> serviceDetails = new Map<String, String>();
     serviceDetails.put(
       Constants.HTTP_METHOD,
-      shippingRequest.LwrCca_ShippingMetaData.httpMethod
+      shippingRequest.shippingMetaData.httpMethod
     );
     serviceDetails.put(
       Constants.SERVICE_TIMEOUT,
-      shippingRequest.LwrCca_ShippingMetaData.serviceTimeout
+      shippingRequest.shippingMetaData.serviceTimeout
     );
     serviceDetails.put(
       Constants.SERVICE_MODE,
-      shippingRequest.LwrCca_ShippingMetaData.serviceMode
+      shippingRequest.shippingMetaData.serviceMode
     );
     serviceDetails.put(
       Constants.MOCKED_RESPONSE,
-      shippingRequest.LwrCca_ShippingMetaData.mockedResponse
+      shippingRequest.shippingMetaData.mockedResponse
     );
     return serviceDetails;
   }
@@ -119,7 +119,7 @@ public abstract class LwrCca_AbstractShippingProvider {
           shippingRequest
         );
         responseMap = ServiceFactory.getService(
-            shippingRequest.LwrCca_ShippingMetaData.serviceImplClass
+            shippingRequest.shippingMetaData.serviceImplClass
           )
           .makeExternalCallout(
             callOutRequest,
