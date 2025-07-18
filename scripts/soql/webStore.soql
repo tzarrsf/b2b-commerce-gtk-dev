@@ -1,0 +1,39 @@
+SELECT
+    Id
+    ,Name
+    ,Description
+	,CheckoutTimeToLive
+	,CheckoutValidAfterDate
+	,Country
+	,CreatedById
+	,CreatedDate
+	,CurrencyIsoCode
+	,DefaultLanguage
+	,DefaultTaxLocaleType
+	,DefaultTaxPolicyId
+	,ExternalReference
+	,GuestBuyerProfileId
+	,GuestCartTimeToLive
+	,IsDeleted
+	,LastModifiedById
+	,LastModifiedDate
+	,LastReferencedDate
+	,LastViewedDate
+	,LocationId
+	,MaxValuesPerFacet
+	,OrderActivationStatus
+	,OrderLifeCycleType
+	,OwnerId
+	,PaginationSize
+	,PricingStrategy
+	,ProductGrouping
+	,SortByPricebookId
+	,StrikethroughPricebookId
+	,SupportedCurrencies
+	,SupportedLanguages
+	,SystemModstamp
+	,Type
+FROM
+    WebStore
+LIMIT
+    10

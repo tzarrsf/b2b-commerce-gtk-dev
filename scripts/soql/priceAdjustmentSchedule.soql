@@ -1,0 +1,21 @@
+SELECT
+    Id
+    ,Name
+    ,Description
+    ,AdjustmentMethod
+	,CreatedById
+	,CreatedDate
+	,CurrencyIsoCode
+	,IsActive
+	,IsDeleted
+	,LastModifiedById
+	,LastModifiedDate
+	,LastReferencedDate
+	,LastViewedDate
+	,OwnerId
+	,ScheduleType
+	,SystemModstamp
+FROM
+    PriceAdjustmentSchedule
+LIMIT
+    10

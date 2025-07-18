@@ -1,0 +1,21 @@
+SELECT
+    Id
+    ,Name
+    ,Description
+    ,CreatedById
+	,CreatedDate
+	,CurrencyIsoCode
+	,IsActive
+	,IsArchived
+	,IsDeleted
+	,IsStandard
+	,LastModifiedById
+	,LastModifiedDate
+	,LastReferencedDate
+	,LastViewedDate
+	,SystemModstamp
+	,ValidFrom
+	,ValidTo
+FROM
+    Pricebook2
+LIMIT 10

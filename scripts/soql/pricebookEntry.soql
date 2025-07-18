@@ -1,0 +1,22 @@
+SELECT
+    Id
+    ,Name
+    ,ActivePriceAdjustmentQuantity
+	,CreatedById
+	,CreatedDate
+	,CurrencyIsoCode
+	,IsActive
+	,IsArchived
+	,IsDeleted
+	,LastModifiedById
+	,LastModifiedDate
+	,Pricebook2Id
+	,Product2Id
+	,ProductCode
+	,ProductSellingModelId
+	,SystemModstamp
+	,UnitPrice
+	,UseStandardPrice
+FROM
+    PricebookEntry
+LIMIT 100

@@ -1,0 +1,21 @@
+SELECT
+    Id
+	,Name
+    ,CatalogId
+	,CreatedById
+	,CreatedDate
+	,CurrencyIsoCode
+	,Description
+	,IsDeleted
+	,IsNavigational
+	,LastModifiedById
+	,LastModifiedDate
+	,LastReferencedDate
+	,LastViewedDate
+	,NumberOfProducts
+	,ParentCategoryId
+	,SortOrder
+	,SystemModstamp
+FROM
+    ProductCategory
+LIMIT 10

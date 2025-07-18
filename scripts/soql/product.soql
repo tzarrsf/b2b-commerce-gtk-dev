@@ -1,0 +1,29 @@
+SELECT
+    Id
+    ,Name
+    ,Description
+    ,CreatedById
+	,CreatedDate
+	,CurrencyIsoCode
+	,DisplayUrl
+	,ExternalDataSourceId
+	,ExternalId
+	,Family
+	,IsActive
+	,IsArchived
+	,IsDeleted
+	,LastModifiedById
+	,LastModifiedDate
+	,LastReferencedDate
+	,LastViewedDate
+	,ProductClass
+	,ProductCode
+	,QuantityUnitOfMeasure
+	,StockKeepingUnit
+	,SystemModstamp
+	,TaxPolicyId
+	,Type
+FROM
+    Product2
+LIMIT
+    10

@@ -1,0 +1,18 @@
+SELECT
+    Id
+    ,Name
+    ,CreatedById
+	,CreatedDate
+	,IsActive
+	,IsDeleted
+	,LastModifiedById
+	,LastModifiedDate
+	,LastReferencedDate
+	,LastViewedDate
+	,Pricebook2Id
+	,SystemModstamp
+	,WebStoreId
+FROM
+    WebStorePricebook
+LIMIT
+	10

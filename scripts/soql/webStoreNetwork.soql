@@ -1,0 +1,15 @@
+SELECT
+    Id
+    ,Name
+    ,CreatedById
+	,CreatedDate
+	,IsDeleted
+	,LastModifiedById
+	,LastModifiedDate
+	,NetworkId
+	,SystemModstamp
+	,WebStoreId
+FROM
+    WebStoreNetwork
+LIMIT
+    10

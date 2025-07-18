@@ -1,0 +1,35 @@
+SELECT
+    Id
+    ,Name
+    ,Description
+	,AllowedExtensions
+	,CaseCommentEmailTemplateId
+	,ChangePasswordEmailTemplateId
+	,ChgEmailVerNewEmailTemplateId
+	,ChgEmailVerOldEmailTemplateId
+	,CreatedById
+	,CreatedDate
+	,DeviceActEmailTemplateId
+	,EmailFooterLogoId
+	,EmailFooterText
+	,EmailSenderAddress
+	,EmailSenderName
+	,FirstActivationDate
+	,ForgotPasswordEmailTemplateId
+	,HeadlessForgotPasswordTemplateId
+	,LastModifiedById
+	,LastModifiedDate
+	,LockoutEmailTemplateId
+	,MaxFileSizeKb
+	,NewSenderAddress
+	,SelfRegMicroBatchSubErrorEmailTemplateId
+	,SelfRegProfileId
+	,Status
+	,SystemModstamp
+	,UrlPathPrefix
+	,VerificationEmailTemplateId
+	,WelcomeEmailTemplateId
+FROM
+    Network
+LIMIT
+    10
