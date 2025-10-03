@@ -195,3 +195,4 @@ scripts/apex/TestQuery*
 
 #Apex Test Classes
 force-app/main/default/classes/TestClass*
+.prettierrc
